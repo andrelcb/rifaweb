@@ -1,0 +1,14 @@
+.tituloRifa {
+    text-decoration: none;
+    color: #1a2e59;
+  }
+  .cardRifa {
+      width: 400px !important;
+  }
+  
+  .cardRifa:hover{
+    cursor: pointer;
+    transform: scale(1.1) !important; 
+    border-style: inset;
+    box-shadow: 0 0 2em #1a2e59 !important;
+  }

@@ -1,0 +1,30 @@
+
+.login {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #fff;
+}
+
+.formSignin {
+    max-width: 330px;
+    padding: 15px;
+  }
+
+  .formSignin .formFloating:focus-within {
+    z-index: 2 !important;
+  }
+
+  .formSignin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .formSignin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
