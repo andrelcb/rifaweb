@@ -2,15 +2,45 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  font-family: 'Exo 2',sans-serif !important;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.bgPrimary {
+  background: #1a2e59 !important;
+}
+
+/* edição de cores primarias no bootstrap */
+
+.btn {
+  border-radius: 100px !important;
+  font-weight: 300 !important;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  border: 0 !important;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif !important;
+} 
+
+.btn-primary {
+  background: #1a2e59 !important;
+}
+
+.btn-success {
+  background: #00b74a !important;
+  border: #00b74a;
+}
+
+.btn-success:hover{
+  background: #048136 !important;
+}
+
+.btn-primary:hover,.btn-primary:hover {
+    background: #274584  !important;
+    color: #fff !important;
 }
