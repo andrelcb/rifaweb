@@ -5,8 +5,15 @@ import styles from '../styles/Home.module.css'
 import HomeFoto from '../public/home.jpg'
 import Link from 'next/link'
 import { RifaItem } from '../components/RifaItem'
+import { useApi } from '../hooks/useApi'
+import { Rifa } from '../types/Rifa'
+import { useEffect } from 'react'
 
-const Home: NextPage = () => {
+type Props = {
+  rifa: Rifa[];
+}
+
+const Home = ({ rifa }: Props) => {
   return (
     <Layout>
       <>
@@ -22,7 +29,7 @@ const Home: NextPage = () => {
                   Crie e gerencie suas rifas de forma prática em segundos com o melhor preço do mercado.
                 </p>
                 <div className="flex-column mt-5 mb-4">
-                  <a className='btn btn-success btn-lg'>Criar minha conta</a>
+                  <Link href={'/cadastrar'}><a className='btn btn-success btn-lg'>Criar minha conta</a></Link>
                 </div>
                 <p className="text-muted text-start">
                   O melhor site para sua rifa.
@@ -31,7 +38,6 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-
         <div className="py-5 bg-light">
           <div className="container">
             <div className="pb-3 col-lg-6 col-md-8 mx-8">
@@ -39,9 +45,9 @@ const Home: NextPage = () => {
             </div>
 
             <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3">
-              <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-              <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-              <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
+              {rifa.map((rifaItem, index) => (
+                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[1], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+              ))}
             </div>
 
             <div className='text-center pt-4'>
@@ -57,3 +63,20 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+
+
+export const getServerSideProps = async () => {
+  const api = useApi();
+  const paramentros = { limit: 6 };
+  const resposta = await api.buscaRifas(paramentros);
+  const rifas: Rifa[] = resposta.rifas;
+
+  return {
+    props: {
+      rifa: rifas
+    }
+  }
+}
+
+

@@ -9,15 +9,15 @@ type Props = {
 
 export const RifaItem = ({ dados }: Props) => {
     return (
-        <Link href={`/rifa/${dados.linkRifa}`}>
+        <Link href={`/rifa/${dados.link_rifa}`}>
             <div className="col mt-5 mb-2">
                 <div className={`${styles.cardRifa} card shadow-md`}>
-                    <img src={dados.imagem} className="card-img-top" />
+                    <img src={dados.imagensRifas} className="card-img-top" />
                     
                     <div className="card-body">
                         <p className={`${styles.tituloRifa} fs-2`}>{dados.nome}</p>
-                        <p className="card-text">Dono: {dados.nomeCriador}</p>
-                        <p className="card-text">Valor da rifa: {dados.valorNumero}</p>
+                        <p className="card-text">Dono: {dados.nome_criador}</p>
+                        <p className="card-text">Valor da rifa: {dados.valor_numero}</p>
                         <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group">
                                 <button type="button" className="btn btn-success"><i className="bi bi-ticket-perforated iconRifa"></i> Participar</button>

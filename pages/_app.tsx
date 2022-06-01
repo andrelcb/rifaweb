@@ -5,6 +5,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import { useEffect } from 'react';
+import { AuthProvider } from '../contexts/Auth/AuthProvider';
+import { RequireAuth } from '../contexts/Auth/RequireAuth';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -16,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   )
 }

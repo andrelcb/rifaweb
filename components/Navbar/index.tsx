@@ -1,9 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../contexts/Auth/AuthContext';
 import ImageLogo from '../../public/logo.png';
 import styles from './Nabar.module.css';
 
 export const Navbar = () => {
+    const auth = useContext(AuthContext);
+    const [loading, setLoading] = useState();
+
     return (
         <header className='p-3 bgPrimary fixed-top navbar-expand-lg text-white'>
             <div className="container">
@@ -29,13 +34,24 @@ export const Navbar = () => {
                                         <Link href={'/termo-de-uso'}><a className='nav-link text-white'>Termo de uso</a></Link>
                                     </li>
                                 </ul>
+
                                 <div className="d-flex mt-3 mt-lg-0" role="search">
-                                    <Link href={'/login'}>
-                                        <a className="btn btn btn-outline-light me-2">Fazer Login</a>
-                                    </Link>
-                                    <Link href={'cadastrar'}>
-                                        <a className="btn btn-success"><i className="bi bi-person"></i>Criar Conta</a>
-                                    </Link>
+                                    {!auth.usuario &&
+                                        <>
+                                            <Link href={'/login'}>
+                                                <a className="btn btn btn-outline-light me-2">Fazer Login</a>
+                                            </Link>
+                                            <Link href={'/cadastrar'}>
+                                                <a className="btn btn-success"><i className="bi bi-person"></i>Criar Conta</a>
+                                            </Link>
+                                        </>
+
+                                    }
+                                    {auth.usuario &&
+                                        <Link href={'/admin'}>
+                                            <a className="btn btn btn-outline-light me-2">Admin</a>
+                                        </Link>
+                                    }
                                 </div>
                             </div>
                         </div>

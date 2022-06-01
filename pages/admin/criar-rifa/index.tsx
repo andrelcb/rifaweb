@@ -1,6 +1,10 @@
+import { LayoutAdmin } from "../../../components/LayoutAdmin"
+
 const CriarRifa = () => {
     return (
-        <div>crie sua rifa</div>
+        <LayoutAdmin>
+            <div>crie sua rifa</div>
+        </LayoutAdmin>
     )
 }
 

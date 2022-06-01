@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Layout } from "../../components/Layout";
 import { RifaItem } from "../../components/RifaItem";
+import { useApi } from "../../hooks/useApi";
 import { Rifa } from "../../types/Rifa";
 
 type Props = {
-    rifas: Rifa[]
+    rifa: Rifa[]
 }
 
-const Rifas = ({ rifas }: Props) => {
+const Rifas = ({ rifa }: Props) => {
     return (
         <Layout>
             <div className="container py-5">
@@ -19,7 +20,7 @@ const Rifas = ({ rifas }: Props) => {
                         <div className="filtro row">
                             <div className="col-lg-4 position-relative m-2">
                                 <select className="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
-                                    <option selected>Todas categorias</option>
+                                    <option>Todas categorias</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
@@ -38,13 +39,9 @@ const Rifas = ({ rifas }: Props) => {
                             </div>
                         </div>
                         <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3">
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
-                            <RifaItem dados={{ imagem: '/iphone.webp', nome: 'IPHONE 13 PRO MAX', nomeCriador: 'Andre Leonardo', id: 1, linkRifa: 'iphone-13-prox', valorNumero: 25 }} />
+                            {rifa.map((rifaItem, index) => (
+                                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[1], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -55,14 +52,16 @@ const Rifas = ({ rifas }: Props) => {
 
 
 export const getServerSideProps = async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const rifas: Rifa[] = await response.json();
+    const api = useApi();
+    const paramentros = { limit: 100 };
+    const resposta = await api.buscaRifas(paramentros);
+    const rifas: Rifa[] = resposta.rifas;
 
     return {
-        props: {
-            rifas
-        }
+      props: {
+        rifa: rifas
+      }
     }
-}
+  }
 
 export default Rifas;
