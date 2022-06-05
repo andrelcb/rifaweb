@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { RifaItem } from '../components/RifaItem'
 import { useApi } from '../hooks/useApi'
 import { Rifa } from '../types/Rifa'
-import { useEffect } from 'react'
 
 type Props = {
   rifa: Rifa[];
@@ -18,13 +17,13 @@ const Home = ({ rifa }: Props) => {
     <Layout>
       <>
         <div className={styles.homeContainer}>
-          <div className="container text-white p-5">
+          <div className="container text-white mx-auto">
             <div className="row align-items-center">
-              <div className={'col-6 mx-auto col-md-6 order-md-2'}>
+              <div className={`col-6 mx-auto col-md-6 order-md-2`}>
                 <Image className={`${styles.imageInicio} img-fluid mb-3 mb-md-0`} src={HomeFoto} width={1024} height={800} />
               </div>
               <div className="col-md-6 text-start">
-                <h1 className={styles.tituloHome}>Crie suas rifas com facilidade</h1>
+                <h1 className={styles.tituloHome}>Crie suas rifas e publique gratuitamente</h1>
                 <p className="textCenter">
                   Crie e gerencie suas rifas de forma prática em segundos com o melhor preço do mercado.
                 </p>
@@ -44,9 +43,9 @@ const Home = ({ rifa }: Props) => {
               <h1 className="text-red"><i className="bi bi-ticket-perforated iconRifa"></i> Rifas</h1>
             </div>
 
-            <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {rifa.map((rifaItem, index) => (
-                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[1], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
               ))}
             </div>
 

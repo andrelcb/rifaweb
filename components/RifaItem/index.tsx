@@ -10,8 +10,8 @@ type Props = {
 export const RifaItem = ({ dados }: Props) => {
     return (
         <Link href={`/rifa/${dados.link_rifa}`}>
-            <div className="col mt-5 mb-2">
-                <div className={`${styles.cardRifa} card shadow-md`}>
+            <div className="col mt-5 mb-2 ">
+                <div className={`${styles.cardRifa} transition ease-in-out hover:-translate-y-1 hover:scale-110 card shadow-md shadow-2xl shadow-blue-500`}>
                     <img src={dados.imagensRifas} className="card-img-top" />
                     
                     <div className="card-body">

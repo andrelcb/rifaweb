@@ -1,13 +1,6 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: 'Exo 2',sans-serif !important;
-}
-
-* {
-  box-sizing: border-box;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .bgPrimary {
   background: #1a2e59 !important;

@@ -1,3 +1,4 @@
+import Image from "next/image"
 
 export const Footer = () => {
     return (
@@ -6,7 +7,7 @@ export const Footer = () => {
                 <footer className="d-flex flex-wrap justify-content-between align-items-center py-5">
                     <div className="col-md-4 d-flex align-items-center">
                         <a href="/" className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                            <img src="logoTicket.png" alt="" width="30" height="30" className="d-inline-block align-text-top" />
+                            <Image src="/logoTicket.png" alt="" width="30" height="30" className="d-inline-block align-text-top" />
                         </a>
                         <span className="mb-3 mb-md-0 text-muted">2022 @Rifaweb - Todos direitos reservados</span>
                     </div>

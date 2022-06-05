@@ -10,8 +10,8 @@ export const Navbar = () => {
     const [loading, setLoading] = useState();
 
     return (
-        <header className='p-3 bgPrimary fixed-top navbar-expand-lg text-white'>
-            <div className="container">
+        <header className='p-3 bgPrimary navbar-expand-lg text-white'>
+            <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="navbar navbar-expand-lg bgPrimary" aria-label="Offcanvas navbar large">
                     <div className="container-fluid">
                         <Link href={'/'}>
@@ -36,7 +36,7 @@ export const Navbar = () => {
                                 </ul>
 
                                 <div className="d-flex mt-3 mt-lg-0" role="search">
-                                    {!auth.usuario &&
+                                    {!auth.usuario ? (
                                         <>
                                             <Link href={'/login'}>
                                                 <a className="btn btn btn-outline-light me-2">Fazer Login</a>
@@ -45,13 +45,11 @@ export const Navbar = () => {
                                                 <a className="btn btn-success"><i className="bi bi-person"></i>Criar Conta</a>
                                             </Link>
                                         </>
-
-                                    }
-                                    {auth.usuario &&
+                                    ) : (
                                         <Link href={'/admin'}>
-                                            <a className="btn btn btn-outline-light me-2">Admin</a>
+                                            <a className="btn btn btn-outline-light me-2">{auth.usuario.nome}</a>
                                         </Link>
-                                    }
+                                    )}
                                 </div>
                             </div>
                         </div>

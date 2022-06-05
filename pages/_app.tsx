@@ -6,7 +6,6 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { AuthProvider } from '../contexts/Auth/AuthProvider';
-import { RequireAuth } from '../contexts/Auth/RequireAuth';
 
 function MyApp({ Component, pageProps }: AppProps) {
 

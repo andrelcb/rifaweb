@@ -7,12 +7,14 @@ type Props = {
 }
 
 
-export const Layout = ({ children }:Props ) => {
+export const Layout = ({ children }: Props) => {
     return (
         <div>
-            <Navbar />
-            <main className="flex-shrink-0">{children}</main>
-            <Footer />
+            <main className="max-h-full">
+                <Navbar />
+                {children}
+                <Footer />
+            </main>
         </div>
     );
 

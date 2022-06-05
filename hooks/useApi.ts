@@ -32,5 +32,14 @@ export const useApi = () => ({
     buscaRifas: async (paramentros:object) => {
         const resposta = await api.get('/rifa/buscar-rifas', { params: paramentros });
         return resposta.data;
+    },
+
+    buscaPremioRifa: async (link:string) => {
+        const resposta = await api.get(`/rifa/${link}/buscar-premios-rifa`);
+        return resposta.data;
+    },
+    buscaPromocaoRifa: async (link:string) => {
+        const resposta = await api.get(`/rifa/${link}/buscar-promocao-rifa`);
+        return resposta.data;
     }
 })

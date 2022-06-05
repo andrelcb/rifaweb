@@ -10,7 +10,7 @@ const Login = () => {
     const [senha, setSenha] = useState('');
 
     useEffect(() => {
-        if(auth.usuario){
+        if (auth.usuario) {
             Router.push('/admin');
         }
     }, [auth])
@@ -23,9 +23,9 @@ const Login = () => {
     }
 
     const handleLogin = async () => {
-        if(email && senha) {
+        if (email && senha) {
             const isLogged = await auth.login(email, senha);
-            if(isLogged) {
+            if (isLogged) {
                 Router.push('/admin');
             } else {
                 console.log('Senha ou usuario errado');
@@ -34,26 +34,32 @@ const Login = () => {
     }
 
     return (
-        <main className={`${styles.login} ${styles.formSignin} w-100 m-auto text-center`}>
-            <form>
-                <img className="mb-4" src="/vercel.svg" alt="" width="200" />
-                <h1 className="h3 mb-3 fw-normal">Login</h1>
+        <main className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+            <div className="max-w-md w-full space-y-8">
+                <div>
+                    <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
+                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login</h2>
+                    <p className="mt-2 text-center text-sm text-gray-600">
 
-                <div className={`${styles.formFloating} form-floating`}>
-                    <input type="email" className="form-control"  id="email" onChange={handleEmail} placeholder="name@example.com" />
-                    <label htmlFor="email">Endereço de e-mail</label>
+                    </p>
                 </div>
-                <div className={`${styles.formFloating} form-floating`}>
-                    <input type="password" className="form-control" onChange={handleSenha} id="senha" placeholder="Password" />
-                    <label htmlFor="senha">Senha</label>
-                </div>
+                <form className='mt-8 space-y-6'>
+                    <div className={`${styles.formFloating} form-floating `}>
+                        <input type="email" className="form-control" id="email" onChange={handleEmail} placeholder="name@example.com" />
+                        <label htmlFor="email">Endereço de e-mail</label>
+                    </div>
+                    <div className={`${styles.formFloating} form-floating`}>
+                        <input type="password" className="form-control" onChange={handleSenha} id="senha" placeholder="Password" />
+                        <label htmlFor="senha">Senha</label>
+                    </div>
 
-                <div className="mb-3">
-                    <label><Link href={'/recuperar-senha'}>Esqueçeu sua senha?</Link></label>
-                </div>
-                <a className="w-100 btn btn-lg btn-primary" onClick={handleLogin}>Entrar</a>
-                <p className="mt-5 mb-3 text-muted">Não possui uma conta Rifaweb? <Link href={'/cadastrar'}>Criar uma conta</Link> </p>
-            </form>
+                    <div className="mb-3">
+                        <label><Link href={'/recuperar-senha'}>Esqueçeu sua senha?</Link></label>
+                    </div>
+                    <a className="w-100 btn btn-lg btn-primary" onClick={handleLogin}>Entrar</a>
+                    <p className="mt-5 mb-3 text-muted">Não possui uma conta Rifaweb? <Link href={'/cadastrar'}>Criar uma conta</Link> </p>
+                </form>
+            </div>
         </main>
     )
 }

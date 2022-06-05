@@ -40,7 +40,7 @@ const Rifas = ({ rifa }: Props) => {
                         </div>
                         <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3">
                             {rifa.map((rifaItem, index) => (
-                                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[1], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
                             ))}
                         </div>
                     </div>
@@ -58,10 +58,10 @@ export const getServerSideProps = async () => {
     const rifas: Rifa[] = resposta.rifas;
 
     return {
-      props: {
-        rifa: rifas
-      }
+        props: {
+            rifa: rifas
+        }
     }
-  }
+}
 
 export default Rifas;
