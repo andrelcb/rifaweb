@@ -6,7 +6,7 @@ const api = axios.create({
 
 
 export const useApi = () => ({
-    autorizaToken: (token:string) => {
+    autorizaToken: (token: string) => {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     },
     validarToken: async () => {
@@ -19,7 +19,7 @@ export const useApi = () => ({
         return resposta.data;
     },
 
-    cadastro: async (data:object) => {
+    cadastro: async (data: object) => {
         const resposta = await api.post('/auth/cadastrar', data);
         return resposta.data
     },
@@ -29,17 +29,23 @@ export const useApi = () => ({
         return resposta.data;
     },
 
-    buscaRifas: async (paramentros:object) => {
+    buscaRifas: async (paramentros: object) => {
         const resposta = await api.get('/rifa/buscar-rifas', { params: paramentros });
         return resposta.data;
     },
 
-    buscaPremioRifa: async (link:string) => {
+    buscaPremioRifa: async (link: string) => {
         const resposta = await api.get(`/rifa/${link}/buscar-premios-rifa`);
         return resposta.data;
     },
-    buscaPromocaoRifa: async (link:string) => {
+    buscaPromocaoRifa: async (link: string) => {
         const resposta = await api.get(`/rifa/${link}/buscar-promocao-rifa`);
         return resposta.data;
+    },
+
+    reservarNumeros: async (data: object, numeros: object, link: any, valorTotal:number) => {
+        const resposta = await api.post(`/rifa/${link}/reservar-numeros/`, { data, numeros, valorTotal });
+        return resposta.data;
+
     }
 })

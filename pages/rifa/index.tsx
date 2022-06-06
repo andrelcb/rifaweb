@@ -38,7 +38,7 @@ const Rifas = ({ rifa }: Props) => {
                                 <button className="btn btn-primary align-self-center m-1"><i className="bi bi-search"></i> Buscar</button>
                             </div>
                         </div>
-                        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3">
+                        <div className="row row-cols-1 row-cols-sm-1 row-cols-md-3 ">
                             {rifa.map((rifaItem, index) => (
                                 <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
                             ))}

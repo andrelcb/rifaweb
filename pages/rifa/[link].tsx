@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetStaticProps } from "next";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
@@ -9,6 +9,8 @@ import { NumeroType } from "../../types/NumeroType";
 import { PremioType } from "../../types/PremioType";
 import { PromocaoType } from "../../types/PromocaoType";
 import { Rifa } from "../../types/Rifa";
+import { useForm } from 'react-hook-form';
+import { Route } from "react-router-dom";
 
 type Props = {
     rifa: Rifa[];
@@ -20,6 +22,8 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
     const [numerosSelecionado, setNumerosSelecionado] = useState<Array<number>>([]);
     const [numerosItem, setNumerosItems] = useState<NumeroType[]>([]);
     const [precoNumero, setPrecoNumero] = useState(0);
+    const api = useApi();
+    const { register, handleSubmit } = useForm();
 
     useEffect(() => {
         montaNumerosRifas();
@@ -81,6 +85,17 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
         }
 
         setNumerosItems(numerosItemTemp);
+    }
+
+    const reservarNumeros = async (data: Object) => {
+        const link = Router.query.link
+        const retorno = await api.reservarNumeros(data, numerosSelecionado, link, precoNumero)
+        if(retorno.idRifa) {
+            Router.push(`/comprar/${retorno.idRifa}`);
+        } else {
+            console.log('erro');
+        }
+        
     }
 
 
@@ -222,12 +237,100 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                                 {numerosSelecionado.map((numero, index) => (
                                     <label key={index} className="text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero} </label>
                                 ))}
-                                <span className="p-2">Total: R$ <b>{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></span>
-                                <button className="btn btn-primary">Reservar</button>
+                                <span className="p-2">Total: <b className="text-green-600">{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></span>
+                                <button className="btn btn-primary p-3" data-bs-toggle="modal" data-bs-target="#modalReserva"><i className="bi bi-arrow-right-short"></i>Prosseguir</button>
                             </div>
                         </div>
                     </div>
                 }
+
+                <div className="modal fade" id="modalReserva" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="align-self-center ml-2 font-weight-bold fs-15px modal-title text-dark mb-0" id="exampleModalLabel">Reserva de número(s)</h4>
+                                <button type="button" className="modal-close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <form onSubmit={handleSubmit(reservarNumeros)}>
+                                <div className="modal-body text-black">
+                                    <p className="fs-14px d-block mb-3">Valor a pagar: <b className="text-green-600">{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></p>
+
+                                    <span className="fs-14px">Números selecionados:</span>
+                                    <div className="m-0 pt-2 pb-5 text-start">
+                                        {numerosSelecionado.map((numero, index) => (
+                                            <label key={index} className="text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero}</label>
+                                        ))}
+                                    </div>
+                                    <p className="fs-12px text-black-50 mb-4">Por favor, preencha os campos abaixo:</p>
+
+                                    <span className="fs-14px font-semibold">Nome Completo:</span>
+                                    <div className="input-group flex-nowrap mt-2 mb-3">
+                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person"></i></span>
+                                        <input
+                                            {...register('nomeCompleto')}
+                                            type="text"
+                                            className="form-control"
+                                            name="nomeCompleto"
+                                            placeholder="Insira seu nome completo"
+                                            aria-label="nomeCompleto"
+                                            aria-describedby="addon-wrapping" />
+                                    </div>
+
+                                    <span className="fs-14px font-semibold">Celular: </span>
+                                    <div className="input-group flex-nowrap mt-2 mb-3">
+                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-phone"></i></span>
+                                        <input
+                                            {...register('celular')}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="insira seu celular com DDD"
+                                            aria-label="celular"
+                                            name="celular"
+                                            aria-describedby="addon-wrapping" />
+                                    </div>
+
+                                    <span className="fs-14px font-semibold">Email: </span>
+                                    <div className="input-group flex-nowrap mt-2 mb-3">
+                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-envelope"></i></span>
+                                        <input
+                                            {...register('email')}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="insira seu e-mail"
+                                            aria-label="email"
+                                            name="email"
+                                            aria-describedby="addon-wrapping" />
+                                    </div>
+
+                                    <span className="fs-14px font-semibold">CPF: </span>
+                                    <div className="input-group flex-nowrap mt-2 mb-3">
+                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person-bounding-box"></i></span>
+                                        <input
+                                            {...register('cpf')}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="insira seu cpf"
+                                            aria-label="cpf"
+                                            name="cpf"
+                                            aria-describedby="addon-wrapping" />
+                                    </div>
+
+                                    <small className="fs-11px">
+                                        Ao reservar meus números declaro ter lido e concordado com os
+                                        <a href="" target="_blank" className="text-primary">termos de uso</a>
+                                    </small>
+                                </div>
+                                <div className="modal-footer text-right pl-0 pr-0">
+                                    <div className="p-4">
+                                        <button type="button" className="btn btn-secondary p-2 m-1" data-bs-dismiss="modal">Cancelar</button>
+                                        <button className="btn btn-success p-2">Reservar</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
 
 
             </>
