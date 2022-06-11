@@ -1,0 +1,28 @@
+.sideBar {
+  height: 100vh !important;
+  height: -webkit-fill-available;
+  max-height: 100vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  position: relative;
+  transition: max-height 1s ease-in-out;
+}
+.sideBar
+
+.navLink {
+  text-decoration: none;
+  color: rgb(209, 208, 208) !important;
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.navLink:focus,
+.navLink:hover {
+  /* background-color: #162649 !important; */
+  color: white !important;
+}
+
+.navLinkActive {
+  background-color: #132242;
+  padding: 10px;
+}

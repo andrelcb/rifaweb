@@ -4,7 +4,7 @@ export type Usuario = {
     id: number;
     nome: string;
     nome_usuario:string;
-    slado:string;
+    saldo:string;
     email: string;
     imagem_perfil: string;
     password?: string;

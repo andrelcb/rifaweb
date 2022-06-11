@@ -10,20 +10,24 @@ import { PremioType } from "../../types/PremioType";
 import { PromocaoType } from "../../types/PromocaoType";
 import { Rifa } from "../../types/Rifa";
 import { useForm } from 'react-hook-form';
-import { Route } from "react-router-dom";
 
 type Props = {
     rifa: Rifa[];
     premioRifa: PremioType[];
     promocaoRifa: PromocaoType[];
+    numerosReservados: Array<number>,
+    numerosPagos: Array<number>
 }
 
-const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
+const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numerosPagos }: Props) => {
+
     const [numerosSelecionado, setNumerosSelecionado] = useState<Array<number>>([]);
     const [numerosItem, setNumerosItems] = useState<NumeroType[]>([]);
     const [precoNumero, setPrecoNumero] = useState(0);
+    const [disponivel, setDisponivel] = useState(0);
     const api = useApi();
     const { register, handleSubmit } = useForm();
+    const route = useRouter();
 
     useEffect(() => {
         montaNumerosRifas();
@@ -66,17 +70,31 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
 
     const montaNumerosRifas = () => {
         let numerosItemTemp: NumeroType[] = [];
-        const array = [1, 2, 3];
         if (rifa[0].quantidade_numeros) {
+            if (numerosReservados.length > 0 && numerosPagos.length > 0) {
+                const disponivel = rifa[0].quantidade_numeros - (numerosReservados.length + numerosPagos.length);
+                setDisponivel(disponivel);
+            }
             for (var index = 0; index < rifa[0].quantidade_numeros; index++) {
-                if (array.includes(index)) {
+                //verifica os numeros reservados da rifa
+                if (numerosReservados.includes(index)) {
                     numerosItemTemp.push({
                         numero: index,
                         status: 'Reservado'
                     });
+
                     continue;
                 }
 
+                //verifica os numeros pagos da rifa
+                if (numerosPagos.includes(index)) {
+                    numerosItemTemp.push({
+                        numero: index,
+                        status: 'Pago'
+                    });
+
+                    continue;
+                }
                 numerosItemTemp.push({
                     numero: index,
                     status: 'Disponivel'
@@ -88,21 +106,20 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
     }
 
     const reservarNumeros = async (data: Object) => {
-        const link = Router.query.link
-        const retorno = await api.reservarNumeros(data, numerosSelecionado, link, precoNumero)
-        if(retorno.idRifa) {
-            Router.push(`/comprar/${retorno.idRifa}`);
+        const id = rifa[0].id;
+        const retorno = await api.reservarNumeros(data, numerosSelecionado, id, precoNumero)
+        if (retorno.idRifa) {
+            route.push(`/reserva/${retorno.idRifa}`);
         } else {
             console.log('erro');
         }
-        
-    }
 
+    }
 
     return (
         <Layout>
             <>
-                <div className="bg-white shadow-lg shadow">
+                <div className="bg-white shadow">
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         <h1 className="text-3xl font-bold text-gray-900">{rifa[0].nome}</h1>
                     </div>
@@ -112,7 +129,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                     <div className="row g-0">
                         <div className="col-sm-6 col-md-8">
                             <div className="px-2 py-6 sm:px-0">
-                                <div id="carouselRifa" className="carousel slide shadow-md shadow-2xl shadow-blue-400" data-bs-ride="carousel">
+                                <div id="carouselRifa" className="carousel slide shadow-2xl shadow-blue-400" data-bs-ride="carousel">
                                     <div className="carousel-indicators">
                                         {rifa[0].imagensRifas.map((imagem: any, index: any) => (
                                             index == 1 ? (
@@ -151,7 +168,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
 
                         <div className="col-sm-6 col-md-4">
                             <div className="py-6">
-                                <div className="card shadow-md shadow-2xl shadow-blue-400 p-4">
+                                <div className="card shadow-md shadow-blue-400 p-4">
                                     <div className="rounded-lg bg-green-500 text-white text-center py-2 br-5">
                                         <span className="text-uppercase font-bold fs-17px">Valor</span><br />
                                         R$ <b className="fs-20px">{rifa[0].valor_numero}</b>
@@ -198,7 +215,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                         {/* promoção */}
                         {promocaoRifa.length > 0 &&
                             <div className="col-sm-12 col-md-12 mt-4">
-                                <div className="card-body ring-2 ring-blue-500 ring-offset-4 ring-offset-blue-100 shadow-md shadow-2xl shadow-blue-400 p-4">
+                                <div className="card-body ring-2 ring-blue-500 ring-offset-4 ring-offset-blue-100 shadow-2xl shadow-blue-400 p-4">
                                     <h2 className="text-center"><i className="text-blue-400 bi bi-megaphone"></i> Promoção</h2>
                                     <div className="d-md-flex justify-content-evenly">
                                         {promocaoRifa.map((promocao, index) => (
@@ -213,10 +230,25 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-lg shadow mb-5">
-                    <div className="max-w-full px-4 sm:px-6 lg:px-8 p-5">
-                        <h1 className="text-center text-3xl font-bold text-gray-900">Filtro</h1>
-                        <div className="flex-wrap d-flex">
+                <div className="bg-white shadow mb-5">
+                    <div className="max-w-full px-3 md:px-12 sm:px-6 lg:px-8 p-5">
+                        <h2 className="text-center text-3xl font-bold text-gray-900"><i className="bi bi-filter"></i> Filtrar números</h2>
+                        <div className="text-center">
+                            <button className="w-35 m-2 py-2 px-3 bg-black text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                                Todos <span className="m-2 bg-white text-black py-1 px-2 rounded-md">{rifa[0].quantidade_numeros}</span>
+                            </button>
+                            <button className="m-2 py-2 px-3 bg-gray-300 text-black text-sm font-semibold rounded-md shadow focus:outline-none">
+                                Disponíveis <span className="bg-black text-white py-1 px-2 rounded-md">{disponivel}</span>
+                            </button>
+                            <button className="m-2 py-2 px-3 bg-warning text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                                Reservados <span className="bg-yellow-600 py-1 px-2 rounded-md">{numerosReservados.length}</span>
+                            </button>
+                            <button className="m-2 py-2 px-3 bg-green-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                                Pagos <span className="bg-green-800 py-1 px-2 rounded-md">{numerosPagos.length}</span>
+                            </button>
+                        </div>
+
+                        <div className="flex-wrap d-flex mt-4">
                             {numerosItem.map((item, index) => (
                                 <Numeros
                                     key={index}
@@ -269,6 +301,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                                         <input
                                             {...register('nomeCompleto')}
                                             type="text"
+                                            required
                                             className="form-control"
                                             name="nomeCompleto"
                                             placeholder="Insira seu nome completo"
@@ -282,6 +315,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                                         <input
                                             {...register('celular')}
                                             type="text"
+                                            required
                                             className="form-control"
                                             placeholder="insira seu celular com DDD"
                                             aria-label="celular"
@@ -294,7 +328,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                                         <span className="input-group-text" id="addon-wrapping"><i className="bi bi-envelope"></i></span>
                                         <input
                                             {...register('email')}
-                                            type="text"
+                                            type="email"
                                             className="form-control"
                                             placeholder="insira seu e-mail"
                                             aria-label="email"
@@ -308,6 +342,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa }: Props) => {
                                         <input
                                             {...register('cpf')}
                                             type="text"
+                                            required
                                             className="form-control"
                                             placeholder="insira seu cpf"
                                             aria-label="cpf"
@@ -357,18 +392,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const rifas: Rifa[] = resposta.rifas;
 
     //busca premio
-    const respostaPremio = await api.buscaPremioRifa(link);
+    const respostaPremio = await api.buscaPremioRifa(rifas[0].id);
     const premioRifa: PremioType[] = respostaPremio.premioRifa;
 
+
     //busca promocao
-    const respostaPromocao = await api.buscaPromocaoRifa(link);
+    const respostaPromocao = await api.buscaPromocaoRifa(rifas[0].id);
     const promocaoRifa: PromocaoType[] = respostaPromocao.promocaoRifa;
+
+    //busca numeros reservados
+    const status = { status: 'Reservado' };
+    const respostaNumeroReservado = await api.buscaNumerosReservados(rifas[0].id, status);
+    let numerosReservados: Array<number> = [];
+    if (respostaNumeroReservado.numerosStatus) {
+        numerosReservados = respostaNumeroReservado.numerosStatus;
+    }
+
+    //busca numeros reservados
+    const statusPago = { status: 'Pago' };
+    const respostaNumerosPagos = await api.buscaNumerosReservados(rifas[0].id, statusPago);
+    let numerosPagos: Array<number> = [];
+    if (respostaNumerosPagos.numerosStatus) {
+        numerosPagos = respostaNumerosPagos.numerosStatus;
+    }
+
 
     return {
         props: {
             rifa: rifas,
             premioRifa: premioRifa,
-            promocaoRifa: promocaoRifa
+            promocaoRifa: promocaoRifa,
+            numerosReservados: numerosReservados,
+            numerosPagos: numerosPagos
         }
     }
 }

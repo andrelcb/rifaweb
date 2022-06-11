@@ -10,11 +10,11 @@ type Props = {
 export const Layout = ({ children }: Props) => {
     return (
         <div>
-            <main className="max-h-full">
-                <Navbar />
+            <Navbar />
+            <main className="">
                 {children}
-                <Footer />
             </main>
+            <Footer />
         </div>
     );
 

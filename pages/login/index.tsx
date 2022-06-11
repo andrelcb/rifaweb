@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
 import styles from './styles.module.css';
 
 const Login = () => {
@@ -28,13 +29,22 @@ const Login = () => {
             if (isLogged) {
                 Router.push('/admin');
             } else {
-                console.log('Senha ou usuario errado');
+                toast.error("Senha ou usuario errado", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         }
     }
 
     return (
         <main className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+            <ToastContainer />
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />

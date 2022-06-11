@@ -20,6 +20,7 @@ export const Navbar = () => {
                         <button className="text-white navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
                             <i className="bi bi-text-paragraph"></i>
                         </button>
+                        
                         <div className="offcanvas offcanvas-end text-white bgPrimary" tabIndex={-1} id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
                             <div className="offcanvas-header">
                                 <h5 className="offcanvas-title" id="offcanvasNavbar2Label"><img className='d-inline-block align-text-top' src='/logoTicket.png' width={30} height={30} /> Rifaweb</h5>

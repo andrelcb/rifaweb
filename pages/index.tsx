@@ -19,8 +19,8 @@ const Home = ({ rifa }: Props) => {
         <div className={styles.homeContainer}>
           <div className="container text-white mx-auto">
             <div className="row align-items-center">
-              <div className={`col-6 mx-auto col-md-6 order-md-2`}>
-                <Image className={`${styles.imageInicio} img-fluid mb-3 mb-md-0`} src={HomeFoto} width={1024} height={800} />
+              <div className={`hidden md:block col-6 mx-auto col-md-6 order-md-2`}>
+                <Image className={`img-fluid mb-3 mb-md-0`} src={HomeFoto} width={1024} height={800} />
               </div>
               <div className="col-md-6 text-start">
                 <h1 className={styles.tituloHome}>Crie suas rifas e publique gratuitamente</h1>
@@ -43,9 +43,9 @@ const Home = ({ rifa }: Props) => {
               <h1 className="text-red"><i className="bi bi-ticket-perforated iconRifa"></i> Rifas</h1>
             </div>
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3">
               {rifa.map((rifaItem, index) => (
-                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: 1, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: rifaItem.id, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
               ))}
             </div>
 

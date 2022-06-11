@@ -34,18 +34,29 @@ export const useApi = () => ({
         return resposta.data;
     },
 
-    buscaPremioRifa: async (link: string) => {
-        const resposta = await api.get(`/rifa/${link}/buscar-premios-rifa`);
+    buscaPremioRifa: async (id: number) => {
+        const resposta = await api.get(`/rifa/${id}/buscar-premios-rifa`);
         return resposta.data;
     },
-    buscaPromocaoRifa: async (link: string) => {
-        const resposta = await api.get(`/rifa/${link}/buscar-promocao-rifa`);
+    buscaPromocaoRifa: async (id: number) => {
+        const resposta = await api.get(`/rifa/${id}/buscar-promocao-rifa`);
         return resposta.data;
     },
-
-    reservarNumeros: async (data: object, numeros: object, link: any, valorTotal:number) => {
-        const resposta = await api.post(`/rifa/${link}/reservar-numeros/`, { data, numeros, valorTotal });
+    buscaNumerosReservados: async (id: number, paramentros: object) => {
+        const resposta = await api.get(`/rifa/${id}/buscar-numeros-status`, { params: paramentros });
         return resposta.data;
 
-    }
+    },
+    reservarNumeros: async (data: object, numeros: object, id: number, valorTotal: number) => {
+        const resposta = await api.post(`/rifa/${id}/reservar-numeros/`, { data, numeros, valorTotal });
+        return resposta.data;
+    },
+    buscaDadosReserva: async (id: string) => {
+        const resposta = await api.get(`/reserva/${id}/buscar-dados-compra`);
+        return resposta.data;
+    },
+    geraCobrancaPix: async (data: object) => {
+        const resposta = await api.post(`/gerarCobrancaPix`, data);
+        return resposta.data;
+    },
 })
