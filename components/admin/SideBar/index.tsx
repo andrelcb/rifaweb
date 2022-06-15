@@ -1,8 +1,8 @@
 import styles from './styles.module.css';
-import { navBar } from '../../utils/navbar'
+import { navBar } from '../../../utils/navbar'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { AuthContext } from '../../contexts/Auth/AuthContext';
+import { AuthContext } from '../../../contexts/Auth/AuthContext';
 import { useContext, useState } from 'react';
 
 

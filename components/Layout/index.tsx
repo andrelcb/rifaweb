@@ -11,9 +11,7 @@ export const Layout = ({ children }: Props) => {
     return (
         <div>
             <Navbar />
-            <main className="">
-                {children}
-            </main>
+            {children}
             <Footer />
         </div>
     );

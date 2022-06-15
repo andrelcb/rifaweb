@@ -3,7 +3,7 @@
   height: -webkit-fill-available;
   max-height: 100vh !important;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+  /* overflow-y: auto !important; */
   position: relative;
   transition: max-height 1s ease-in-out;
 }

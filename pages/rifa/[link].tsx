@@ -387,7 +387,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const api = useApi();
 
     //busca rifas
-    const paramentros = { limit: 6, link_rifa: link };
+    const paramentros = { link_rifa: link };
     const resposta = await api.buscaRifas(paramentros);
     const rifas: Rifa[] = resposta.rifas;
 

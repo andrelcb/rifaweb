@@ -1,8 +1,8 @@
 import { ReactElement, useContext, useState } from "react"
-import { RequireAuth } from "../../contexts/Auth/RequireAuth";
+import { GetServerSideProps } from "next";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { useRouter } from "next/router";
-import { SideBar } from "../SideBar";
+import { SideBar } from "../admin/SideBar";
 import styles from './styles.module.css';
 
 type Props = {
@@ -24,23 +24,21 @@ export const LayoutAdmin = ({ children }: Props) => {
         }
     }
     return (
-        <RequireAuth>
-            <>
-                <div className=' text-white block md:hidden bgPrimary border-0 p-2'>
-                    <button onClick={exibeSideBar} className="fs-2" type="button">
-                        <i className="bi bi-text-paragraph"></i>
-                    </button>
-                </div>
-                <main className={`d-flex flex-nowrap`}>
-                    <SideBar classSideBar={classSideBar} />
-                    <div className="overflow-y-scroll max-h-screen h-screen max-w-screen w-screen">
-                        <div className="container-fluid py-2 md:py-5">
-                            {children}
-                        </div>
+        <>
+            <div className=' text-white block md:hidden bgPrimary border-0 p-2'>
+                <button onClick={exibeSideBar} className="fs-2" type="button">
+                    <i className="bi bi-text-paragraph"></i>
+                </button>
+            </div>
+            <main className={`d-flex flex-nowrap`}>
+                <SideBar classSideBar={classSideBar} />
+                <div className="overflow-y-scroll max-h-screen h-screen max-w-screen w-screen">
+                    <div className="container-fluid py-2 md:py-5">
+                        {children}
                     </div>
-                </main>
-            </>
-        </RequireAuth>
+                </div>
+            </main>
+        </>
     );
 
 }

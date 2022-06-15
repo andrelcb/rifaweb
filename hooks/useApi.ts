@@ -1,8 +1,6 @@
-import axios from "axios";
+import { getAPIClient } from "./axios";
 
-const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API
-})
+const api = getAPIClient();
 
 
 export const useApi = () => ({
@@ -33,6 +31,10 @@ export const useApi = () => ({
         const resposta = await api.get('/rifa/buscar-rifas', { params: paramentros });
         return resposta.data;
     },
+    buscaRifa: async (id: any) => {
+        const resposta = await api.get(`/rifa/${id}`);
+        return resposta.data;
+    },
 
     buscaPremioRifa: async (id: number) => {
         const resposta = await api.get(`/rifa/${id}/buscar-premios-rifa`);
@@ -54,6 +56,15 @@ export const useApi = () => ({
     buscaDadosReserva: async (id: string) => {
         const resposta = await api.get(`/reserva/${id}/buscar-dados-compra`);
         return resposta.data;
+    },
+    buscaCategoriaRifa: async () => {
+        const resposta = await api.get(`/buscar-categoria-rifa`);
+        return resposta.data;
+
+    },
+    cadastrarRifa: async (data: object) => {
+        const resposta = await api.post('/rifa/inserir-rifa', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        return resposta.data
     },
     geraCobrancaPix: async (data: object) => {
         const resposta = await api.post(`/gerarCobrancaPix`, data);

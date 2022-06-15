@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { LayoutAdmin } from "../../components/LayoutAdmin";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
+import { GetServerSideProps } from "next";
+import { parseCookies } from 'nookies'
 
 const Admin = () => {
     const auth = useContext(AuthContext);
@@ -18,3 +20,19 @@ const Admin = () => {
 }
 
 export default Admin;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { 'rifaAuthToken': token } = parseCookies(context);
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {}
+    }
+
+}
