@@ -25,8 +25,9 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
     const [numerosItem, setNumerosItems] = useState<NumeroType[]>([]);
     const [precoNumero, setPrecoNumero] = useState(0);
     const [disponivel, setDisponivel] = useState(0);
-    const api = useApi();
+    const [showModal, setShowModal] = useState<boolean>(false);
     const { register, handleSubmit } = useForm();
+    const api = useApi();
     const route = useRouter();
 
     useEffect(() => {
@@ -263,113 +264,135 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
 
 
                 {numerosSelecionado.length > 0 &&
-                    <div className="fixed-bottom bg-white">
-                        <div className="row text-center m-3">
+                    <div className="fixed flex bottom-0 w-full z-40 bg-white">
+                        <div className="flex-row items-center text-center m-3">
                             <div className="p-3">
                                 {numerosSelecionado.map((numero, index) => (
-                                    <label key={index} className="text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero} </label>
+                                    <label key={index} className="text-white text-semibold rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero} </label>
                                 ))}
                                 <span className="p-2">Total: <b className="text-green-600">{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></span>
-                                <button className="btn btn-primary p-3" data-bs-toggle="modal" data-bs-target="#modalReserva"><i className="bi bi-arrow-right-short"></i>Prosseguir</button>
+                                <button className="btn btn-primary px-3" onClick={() => setShowModal(true)}><i className="bi bi-arrow-right-short"></i>Prosseguir</button>
                             </div>
                         </div>
                     </div>
                 }
 
-                <div className="modal fade" id="modalReserva" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="align-self-center ml-2 font-weight-bold fs-15px modal-title text-dark mb-0" id="exampleModalLabel">Reserva de número(s)</h4>
-                                <button type="button" className="modal-close" data-dismiss="modal" aria-hidden="true">×</button>
+                {showModal ? (
+                    <>
+                        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed-top inset-0 z-50 outline-none focus:outline-none"                        >
+                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                {/*content*/}
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
+                                    {/*header*/}
+                                    <div className="p-4 border-b border-solid border-slate-200 rounded-t">
+                                        <h3 className="fs-14px d-block mb-3">Valor a pagar: <b className="text-green-600">{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></h3>
+
+                                        <span className="fs-14px">Números selecionados:</span>
+                                        <div className="m-0 pt-2 pb-5 text-start">
+                                            {numerosSelecionado.map((numero, index) => (
+                                                <label key={index} className="text-white text-semibold text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero}</label>
+                                            ))}
+                                        </div>
+                                        <button
+                                            className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                            onClick={() => setShowModal(false)}
+                                        >
+                                            <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                ×
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                    {/*body*/}
+                                    <form onSubmit={handleSubmit(reservarNumeros)}>
+                                        <div className="relative p-4 flex-auto">
+                                            <div className="body text-black">
+                                                <p className="fs-12px text-black-50 mb-4">Por favor, preencha os campos abaixo:</p>
+
+                                                <span className="fs-14px font-semibold">Nome Completo:</span>
+                                                <div className="input-group flex-nowrap mt-2 mb-3">
+                                                    <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person"></i></span>
+                                                    <input
+                                                        {...register('nomeCompleto')}
+                                                        type="text"
+                                                        required
+                                                        className="form-control"
+                                                        name="nomeCompleto"
+                                                        placeholder="Insira seu nome completo"
+                                                        aria-label="nomeCompleto"
+                                                        aria-describedby="addon-wrapping" />
+                                                </div>
+
+                                                <span className="fs-14px font-semibold">Celular: </span>
+                                                <div className="input-group flex-nowrap mt-2 mb-3">
+                                                    <span className="input-group-text" id="addon-wrapping"><i className="bi bi-phone"></i></span>
+                                                    <input
+                                                        {...register('celular')}
+                                                        type="text"
+                                                        required
+                                                        className="form-control"
+                                                        placeholder="insira seu celular com DDD"
+                                                        aria-label="celular"
+                                                        name="celular"
+                                                        aria-describedby="addon-wrapping" />
+                                                </div>
+
+                                                <span className="fs-14px font-semibold">Email: </span>
+                                                <div className="input-group flex-nowrap mt-2 mb-3">
+                                                    <span className="input-group-text" id="addon-wrapping"><i className="bi bi-envelope"></i></span>
+                                                    <input
+                                                        {...register('email')}
+                                                        type="email"
+                                                        className="form-control"
+                                                        placeholder="insira seu e-mail"
+                                                        aria-label="email"
+                                                        name="email"
+                                                        aria-describedby="addon-wrapping" />
+                                                </div>
+
+                                                <span className="fs-14px font-semibold">CPF: </span>
+                                                <div className="input-group flex-nowrap mt-2 mb-3">
+                                                    <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person-bounding-box"></i></span>
+                                                    <input
+                                                        {...register('cpf')}
+                                                        type="text"
+                                                        required
+                                                        className="form-control"
+                                                        placeholder="insira seu cpf"
+                                                        aria-label="cpf"
+                                                        name="cpf"
+                                                        aria-describedby="addon-wrapping" />
+                                                </div>
+                                            </div>
+                                            <small className="fs-11px">
+                                                Ao reservar meus números declaro ter lido e concordado com os <a href="/termos-de-uso" target="_blank" className="text-primary">termos de uso</a>
+                                            </small>
+                                        </div>
+                                        {/*footer*/}
+                                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                            <button
+                                                type="button"
+                                                className="btn btn-secondary p-2 m-1"
+                                                onClick={() => setShowModal(false)}>
+                                                Cancelar
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="btn btn-success p-2">
+                                                Reservar
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <form onSubmit={handleSubmit(reservarNumeros)}>
-                                <div className="modal-body text-black">
-                                    <p className="fs-14px d-block mb-3">Valor a pagar: <b className="text-green-600">{precoNumero.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</b></p>
-
-                                    <span className="fs-14px">Números selecionados:</span>
-                                    <div className="m-0 pt-2 pb-5 text-start">
-                                        {numerosSelecionado.map((numero, index) => (
-                                            <label key={index} className="text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero}</label>
-                                        ))}
-                                    </div>
-                                    <p className="fs-12px text-black-50 mb-4">Por favor, preencha os campos abaixo:</p>
-
-                                    <span className="fs-14px font-semibold">Nome Completo:</span>
-                                    <div className="input-group flex-nowrap mt-2 mb-3">
-                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person"></i></span>
-                                        <input
-                                            {...register('nomeCompleto')}
-                                            type="text"
-                                            required
-                                            className="form-control"
-                                            name="nomeCompleto"
-                                            placeholder="Insira seu nome completo"
-                                            aria-label="nomeCompleto"
-                                            aria-describedby="addon-wrapping" />
-                                    </div>
-
-                                    <span className="fs-14px font-semibold">Celular: </span>
-                                    <div className="input-group flex-nowrap mt-2 mb-3">
-                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-phone"></i></span>
-                                        <input
-                                            {...register('celular')}
-                                            type="text"
-                                            required
-                                            className="form-control"
-                                            placeholder="insira seu celular com DDD"
-                                            aria-label="celular"
-                                            name="celular"
-                                            aria-describedby="addon-wrapping" />
-                                    </div>
-
-                                    <span className="fs-14px font-semibold">Email: </span>
-                                    <div className="input-group flex-nowrap mt-2 mb-3">
-                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-envelope"></i></span>
-                                        <input
-                                            {...register('email')}
-                                            type="email"
-                                            className="form-control"
-                                            placeholder="insira seu e-mail"
-                                            aria-label="email"
-                                            name="email"
-                                            aria-describedby="addon-wrapping" />
-                                    </div>
-
-                                    <span className="fs-14px font-semibold">CPF: </span>
-                                    <div className="input-group flex-nowrap mt-2 mb-3">
-                                        <span className="input-group-text" id="addon-wrapping"><i className="bi bi-person-bounding-box"></i></span>
-                                        <input
-                                            {...register('cpf')}
-                                            type="text"
-                                            required
-                                            className="form-control"
-                                            placeholder="insira seu cpf"
-                                            aria-label="cpf"
-                                            name="cpf"
-                                            aria-describedby="addon-wrapping" />
-                                    </div>
-
-                                    <small className="fs-11px">
-                                        Ao reservar meus números declaro ter lido e concordado com os
-                                        <a href="" target="_blank" className="text-primary">termos de uso</a>
-                                    </small>
-                                </div>
-                                <div className="modal-footer text-right pl-0 pr-0">
-                                    <div className="p-4">
-                                        <button type="button" className="btn btn-secondary p-2 m-1" data-bs-dismiss="modal">Cancelar</button>
-                                        <button className="btn btn-success p-2">Reservar</button>
-                                    </div>
-                                </div>
-                            </form>
-
                         </div>
-                    </div>
-                </div>
+                        <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
+                    </>
+                ) : null}
 
 
             </>
-        </Layout>
+        </Layout >
     )
 }
 
