@@ -173,7 +173,6 @@ interface Params extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     // usa contexto para verificar a autenticação dos nookies via server side
-
     const apiClient = getAPIClient(context);
     const { 'rifaAuthToken': token } = parseCookies(context);
     if (!token) {

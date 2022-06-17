@@ -40,12 +40,12 @@ const Home = ({ rifa }: Props) => {
         <div className="py-5 bg-light">
           <div className="container">
             <div className="pb-3 col-lg-6 col-md-8 mx-8">
-              <h1 className="text-red"><i className="bi bi-ticket-perforated iconRifa"></i> Rifas</h1>
+              <h3 className="text-3xl"><i className="bi bi-ticket-perforated iconRifa"></i> Útilmas Rifas cadastradas</h3>
             </div>
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
               {rifa.map((rifaItem, index) => (
-                <RifaItem key={index} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: rifaItem.id, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                <RifaItem key={index} nomeBotao="Participar" link={`/rifa/${rifaItem.link_rifa}`} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: rifaItem.id, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
               ))}
             </div>
 

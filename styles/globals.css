@@ -27,8 +27,11 @@
 
 /* edição de cores primarias no bootstrap */
 .btn {
-  @apply shadow-md py-3 rounded-md transition duration-300;
-  font-weight: 300 !important;
+  @apply shadow-md py-3 px-5 rounded-md transition duration-200;
+  text-transform: uppercase;
+}
+.botao  {
+  @apply shadow-md py-3 px-5 rounded-md transition duration-300 text-white;
   text-transform: uppercase;
 }
 
@@ -38,7 +41,7 @@
 
 .btn-success {
   background: #00b74a !important;
-  border: #00b74a;
+  border: #fff;
 }
 
 .btn-success:hover {

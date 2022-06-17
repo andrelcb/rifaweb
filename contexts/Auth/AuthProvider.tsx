@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
     const login = async (email: string, senha: string) => {
         const data = await api.login(email, senha);
-        
+
         if (data.usuario && data.token) {
             api.autorizaToken(data.token);
             setUsuario(data.usuario);
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         const resposta = await api.cadastro(data);
 
         if (resposta.usuario && resposta.token) {
+            api.autorizaToken(resposta.token);
             setUsuario(resposta.usuario);
             setToken(resposta.token);
             return resposta;

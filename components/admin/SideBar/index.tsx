@@ -20,7 +20,7 @@ export const SideBar = ({ classSideBar }: Props) => {
                 <div className="align-items-center p-3">
                     <div className="row">
                         <div className="d-flex col-sm-12 ">
-                            <img src="https://github.com/mdo.png" alt="" width="42" height="42" className="rounded-circle me-2" />
+                            <img src={auth.usuario?.imagem_perfil ? auth.usuario?.imagem_perfil : '/usuarioPadrao.png'} alt="" width="42" height="42" className="rounded-circle me-2" />
                             <span className="fs-4">{auth.usuario?.nome}</span>
                         </div>
                         <div className="col-sm-12 mt-3">
@@ -49,7 +49,7 @@ export const SideBar = ({ classSideBar }: Props) => {
                 <hr />
                 <div className="dropdown">
                     <a href="#" className="d-flex align-items-center link-light text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <img src={auth.usuario?.imagem_perfil ? auth.usuario?.imagem_perfil : '/usuarioPadrao.png'} alt="" width="32" height="32" className="rounded-circle me-2" />
                         <strong>Andre</strong>
                     </a>
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
