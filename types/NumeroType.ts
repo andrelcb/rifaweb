@@ -1,4 +1,4 @@
 export type NumeroType = {
-    numero: number,
+    numero: string,
     status: string
 }

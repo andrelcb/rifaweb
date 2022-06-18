@@ -13,7 +13,7 @@ export const RifaItem = ({ dados, nomeBotao, link }: Props) => {
     return (
         <Link href={link}>
             <div className={`mt-4 relative cursor-pointer transition ease-in-out hover:scale-110 card shadow-2xl shadow-blue-500`}>
-                <img src={dados.imagensRifas} className="card-img-top h-60 w-48" />
+                <img src={dados.imagensRifas} className="card-img-top h-48 w-48 lg:h-60 lg:w-48" />
                 <p className="absolute top-0 -translate-y-1/2 bg-green-500 px-3 py-1 text-sm font-semibold text-white tracking-wide rounded-full">R$ {dados.valor_numero}</p>
                 <div className="card-body">
                     <h3 className={`fs-2`}>{dados.nome}</h3>

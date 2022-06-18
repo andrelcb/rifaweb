@@ -15,16 +15,17 @@ type Props = {
     rifa: Rifa[];
     premioRifa: PremioType[];
     promocaoRifa: PromocaoType[];
-    numerosReservados: Array<number>,
-    numerosPagos: Array<number>
+    numerosReservados: Array<string>,
+    numerosPagos: Array<string>
 }
 
 const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numerosPagos }: Props) => {
 
-    const [numerosSelecionado, setNumerosSelecionado] = useState<Array<number>>([]);
+    const [numerosSelecionado, setNumerosSelecionado] = useState<Array<string>>([]);
     const [numerosItem, setNumerosItems] = useState<NumeroType[]>([]);
     const [precoNumero, setPrecoNumero] = useState(0);
     const [disponivel, setDisponivel] = useState(0);
+    const [filtro, setFiltro] = useState('Todos');
     const [showModal, setShowModal] = useState<boolean>(false);
     const { register, handleSubmit } = useForm();
     const api = useApi();
@@ -34,14 +35,14 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
         montaNumerosRifas();
     }, [])
 
-    const handleNumeros = async (index: number) => {
+    const handleNumeros = async (index: number, numero: string) => {
         let numeroItemTemp = [...numerosItem];
         let numerosSelecionadoTemp = [...numerosSelecionado];
 
         if (numeroItemTemp[index].status == 'Disponivel') {
-            numeroItemTemp[index].status = 'Selecionado'
 
-            numerosSelecionadoTemp.push(index);
+            numeroItemTemp[index].status = 'Selecionado'
+            numerosSelecionadoTemp.push(numero);
             let preco = parseFloat(rifa[0].valor_numero);
 
             setPrecoNumero(precoNumero + preco);
@@ -58,7 +59,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
         }
         else if (numeroItemTemp[index].status == 'Selecionado') {
             numeroItemTemp[index].status = 'Disponivel';
-            var remover = numerosSelecionadoTemp.findIndex(x => x === index);
+            var remover = numerosSelecionadoTemp.findIndex(x => x === numero);
             numerosSelecionadoTemp.splice(remover, 1)
             let preco = parseFloat(rifa[0].valor_numero);
             setPrecoNumero(precoNumero - preco);
@@ -69,18 +70,43 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
 
     }
 
+    const filtrarNumeros = (status: string) => {
+        setFiltro(status);
+    }
+
     const montaNumerosRifas = () => {
         let numerosItemTemp: NumeroType[] = [];
-        if (rifa[0].quantidade_numeros) {
-            if (numerosReservados.length > 0 && numerosPagos.length > 0) {
-                const disponivel = rifa[0].quantidade_numeros - (numerosReservados.length + numerosPagos.length);
-                setDisponivel(disponivel);
+        const quantidadeNumeros = rifa[0].quantidade_numeros;
+        let numeros: string = '';
+        //monta rifa com quatidades de numeros
+
+        //verifica total de rifas dispooniveis
+        if (quantidadeNumeros) {
+            if (numerosReservados.length > 0) {
+                setDisponivel(quantidadeNumeros - numerosReservados.length);
+            } else if (numerosPagos.length > 0) {
+                setDisponivel(quantidadeNumeros - numerosPagos.length);
             }
-            for (var index = 0; index < rifa[0].quantidade_numeros; index++) {
+
+            if (numerosReservados.length > 0 && numerosPagos.length > 0) {
+                setDisponivel(quantidadeNumeros - (numerosReservados.length + numerosPagos.length));
+            }
+            for (var index = 0; index < quantidadeNumeros; index++) {
+                if (quantidadeNumeros <= 100) {
+                    numeros = addZeroes(index, 2);
+                } else if (quantidadeNumeros <= 1000) {
+                    numeros = addZeroes(index, 3);
+                } else if (quantidadeNumeros <= 5000) {
+                    numeros = addZeroes(index, 4);
+                } else {
+                    numeros = addZeroes(index, 5);
+                }
+
+
                 //verifica os numeros reservados da rifa
-                if (numerosReservados.includes(index)) {
+                if (numerosReservados.includes(numeros)) {
                     numerosItemTemp.push({
-                        numero: index,
+                        numero: numeros,
                         status: 'Reservado'
                     });
 
@@ -88,16 +114,16 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                 }
 
                 //verifica os numeros pagos da rifa
-                if (numerosPagos.includes(index)) {
+                if (numerosPagos.includes(numeros)) {
                     numerosItemTemp.push({
-                        numero: index,
+                        numero: numeros,
                         status: 'Pago'
                     });
 
                     continue;
                 }
                 numerosItemTemp.push({
-                    numero: index,
+                    numero: numeros,
                     status: 'Disponivel'
                 });
             }
@@ -115,6 +141,21 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
             console.log('erro');
         }
 
+    }
+
+    const addZeroes = (num: number, len: number) => {
+        var numberWithZeroes = String(num);
+        var counter = numberWithZeroes.length;
+
+        while (counter < len) {
+
+            numberWithZeroes = "0" + numberWithZeroes;
+
+            counter++;
+
+        }
+
+        return numberWithZeroes;
     }
 
     return (
@@ -235,16 +276,16 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                     <div className="max-w-full px-3 md:px-12 sm:px-6 lg:px-8 p-5">
                         <h2 className="text-center text-3xl font-bold text-gray-900"><i className="bi bi-filter"></i> Filtrar números</h2>
                         <div className="text-center">
-                            <button className="w-35 m-2 py-2 px-3 bg-black text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                            <button className="w-35 m-2 py-2 px-3 bg-black text-white text-sm font-semibold rounded-md shadow focus:outline-none" onClick={() => filtrarNumeros('Todos')}>
                                 Todos <span className="m-2 bg-white text-black py-1 px-2 rounded-md">{rifa[0].quantidade_numeros}</span>
                             </button>
-                            <button className="m-2 py-2 px-3 bg-gray-300 text-black text-sm font-semibold rounded-md shadow focus:outline-none">
+                            <button className="m-2 py-2 px-3 bg-gray-300 text-black text-sm font-semibold rounded-md shadow focus:outline-none" onClick={() => filtrarNumeros('Disponivel')}>
                                 Disponíveis <span className="bg-black text-white py-1 px-2 rounded-md">{disponivel}</span>
                             </button>
-                            <button className="m-2 py-2 px-3 bg-warning text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                            <button className="m-2 py-2 px-3 bg-warning text-white text-sm font-semibold rounded-md shadow focus:outline-none" onClick={() => filtrarNumeros('Reservado')}>
                                 Reservados <span className="bg-yellow-600 py-1 px-2 rounded-md">{numerosReservados.length}</span>
                             </button>
-                            <button className="m-2 py-2 px-3 bg-green-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none">
+                            <button className="m-2 py-2 px-3 bg-green-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none" onClick={() => filtrarNumeros('Pago')}>
                                 Pagos <span className="bg-green-800 py-1 px-2 rounded-md">{numerosPagos.length}</span>
                             </button>
                         </div>
@@ -253,8 +294,9 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                             {numerosItem.map((item, index) => (
                                 <Numeros
                                     key={index}
+                                    filtro={filtro}
                                     item={item}
-                                    onClick={() => handleNumeros(index)}
+                                    onClick={() => handleNumeros(index, item.numero)}
 
                                 />
                             ))}
@@ -263,6 +305,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                 </div>
 
 
+                {/* exibe valor total de numeros e numeros */}
                 {numerosSelecionado.length > 0 &&
                     <div className="fixed flex bottom-0 w-full z-40 bg-white">
                         <div className="flex-row items-center text-center m-3">
@@ -277,6 +320,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                     </div>
                 }
 
+                {/* MODAL PARA RESERVAR NUMEROS */}
                 {showModal ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed-top inset-0 z-50 outline-none focus:outline-none"                        >
@@ -426,7 +470,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //busca numeros reservados
     const status = { status: 'Reservado' };
     const respostaNumeroReservado = await api.buscaNumerosReservados(rifas[0].id, status);
-    let numerosReservados: Array<number> = [];
+    let numerosReservados: Array<string> = [];
     if (respostaNumeroReservado.numerosStatus) {
         numerosReservados = respostaNumeroReservado.numerosStatus;
     }
@@ -434,7 +478,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //busca numeros reservados
     const statusPago = { status: 'Pago' };
     const respostaNumerosPagos = await api.buscaNumerosReservados(rifas[0].id, statusPago);
-    let numerosPagos: Array<number> = [];
+    let numerosPagos: Array<string> = [];
     if (respostaNumerosPagos.numerosStatus) {
         numerosPagos = respostaNumerosPagos.numerosStatus;
     }

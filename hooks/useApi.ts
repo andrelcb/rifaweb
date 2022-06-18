@@ -54,7 +54,7 @@ export const useApi = () => ({
         return resposta.data;
     },
     buscaDadosReserva: async (id: string) => {
-        const resposta = await api.get(`/reserva/${id}/buscar-dados-compra`);
+        const resposta = await api.get(`/reserva/${id}/buscar-dados-reserva`);
         return resposta.data;
     },
     buscaCategoriaRifa: async () => {

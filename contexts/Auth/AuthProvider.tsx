@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Usuario } from "../../types/Usuario";
 import { AuthContext } from "./AuthContext";
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from "next/router";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
@@ -51,11 +51,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     const logout = async () => {
         await api.logout();
         setUsuario(null);
-        setToken('');
+        removeToken();
         Router.push('/login')
 
     }
 
+    const removeToken = () => {
+        destroyCookie(undefined, 'rifaAuthToken')
+    }
     const setToken = (token: string) => {
         setCookie(undefined, 'rifaAuthToken', token, {
             maxAge: 60 * 60 * 1, //1hora

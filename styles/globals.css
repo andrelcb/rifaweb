@@ -31,8 +31,9 @@
   text-transform: uppercase;
 }
 .botao  {
-  @apply shadow-md py-3 px-5 rounded-md transition duration-300 text-white;
+  @apply shadow-md py-3 px-5 rounded-md transition-all duration-300 text-white border-0;
   text-transform: uppercase;
+  text-decoration: none;
 }
 
 .btn-primary {

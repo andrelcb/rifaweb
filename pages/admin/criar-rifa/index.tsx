@@ -78,7 +78,6 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         if (data) {
             setCarregando(true);
             const resposta = await api.cadastrarRifa(formData);
-            console.log(resposta);
             if (resposta.erro === "") {
                 setCarregando(false);
                 toast.success("Rifa cadastrada com sucesso!", {
@@ -113,6 +112,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                 draggable: true,
                 progress: undefined,
             });
+            setCarregando(false);
         }
     }
 
@@ -289,7 +289,11 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                     </div>
                                     <span className="px-3 text-sm mt text-slate-600">Ao criar esta rifa declaro ter lido e concordado com os <a href="">termos de uso</a> da plataforma RifaWeb.</span>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                        <button type="submit" className={carregando ? 'disabled btn btn-primary inline-flex justify-center px-4' : "btn btn-primary inline-flex justify-center px-4"}>{carregando ? 'Carregando..' : 'Criar rifa'}</button>
+                                        <button type="submit"  className={"btn btn-primary inline-flex justify-center px-4"}>
+                                            {carregando
+                                                ? <div className="spinner-border text-primary" role="status"></div>
+                                                : 'Criar rifa'}
+                                        </button>
                                     </div>
                                 </div>
                             </form>
