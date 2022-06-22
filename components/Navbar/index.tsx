@@ -7,8 +7,6 @@ import styles from './Nabar.module.css';
 
 export const Navbar = () => {
     const auth = useContext(AuthContext);
-    const [loading, setLoading] = useState();
-
     return (
         <header className='p-3 bgPrimary navbar-expand-lg text-white'>
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,7 +18,7 @@ export const Navbar = () => {
                         <button className="text-white navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
                             <i className="bi bi-text-paragraph"></i>
                         </button>
-                        
+
                         <div className="offcanvas offcanvas-end text-white bgPrimary" tabIndex={-1} id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
                             <div className="offcanvas-header">
                                 <h5 className="offcanvas-title" id="offcanvasNavbar2Label"><img className='d-inline-block align-text-top' src='/logoTicket.png' width={30} height={30} /> Rifaweb</h5>
@@ -40,15 +38,15 @@ export const Navbar = () => {
                                     {!auth.usuario ? (
                                         <>
                                             <Link href={'/login'}>
-                                                <a className="btn btn btn-outline-light me-2">Fazer Login</a>
+                                                <a className="btn btn-outline-light me-2">Fazer Login</a>
                                             </Link>
                                             <Link href={'/cadastrar'}>
-                                                <a className="btn btn-success"><i className="bi bi-person"></i>Criar Conta</a>
+                                                <a className="botao botao-sky"><i className="bi bi-person"></i>Criar Conta</a>
                                             </Link>
                                         </>
                                     ) : (
                                         <Link href={'/admin'}>
-                                            <a className="btn btn btn-outline-light me-2">{auth.usuario.nome}</a>
+                                            <a className="botao botao-sky">{auth.usuario.nome}</a>
                                         </Link>
                                     )}
                                 </div>

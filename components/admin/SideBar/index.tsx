@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import { navBar } from '../../../utils/navbar'
+import { SideBarRota } from '../../../utils/SideBar'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../../contexts/Auth/AuthContext';
@@ -31,8 +31,8 @@ export const SideBar = ({ classSideBar }: Props) => {
                         </div>
                     </div>
                 </div>
-                <ul className="nav nav-pills flex-column mb-auto fs-5 mt-2">
-                    {navBar.map((link, index) => (
+                <ul className="nav nav-pills flex-column mb-auto text-lg mt-2">
+                    {SideBarRota.map((link, index) => (
                         <li key={index} className="p-1">
                             <Link href={link.path}>
                                 <a className={

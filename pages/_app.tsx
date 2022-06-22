@@ -11,7 +11,10 @@ import { AuthProvider } from '../contexts/Auth/AuthProvider';
 function MyApp({ Component, pageProps }: AppProps) {
 
   //resolvendo bug de client server do next e pushando js do bootstrap
-  useEffect(() => { typeof document !== undefined ? require('bootstrap/dist/js/bootstrap') : null }, [])
+  useEffect(() => {
+    typeof document !== undefined ? require('bootstrap/dist/js/bootstrap') : null
+  },
+    [])
 
   return (
     <>

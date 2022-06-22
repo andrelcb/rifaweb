@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 const Cadastrar = () => {
     const auth = useContext(AuthContext);
     const { register, handleSubmit } = useForm();
-    const [erro, setErro] = useState('');
+    const [carregando, setCarregando] = useState<boolean>(false);
 
     useEffect(() => {
         if (auth.usuario) {
@@ -18,10 +18,13 @@ const Cadastrar = () => {
     }, [auth])
 
     const handleCadastrar = async (data: Object) => {
+        setCarregando(true);
         const resposta = await auth.cadastro(data)
         if (resposta.usuario) {
+            setCarregando(false);
             Router.push('/admin');
         } else {
+            setCarregando(false);
             toast.error(resposta.erro, {
                 position: "top-right",
                 autoClose: 3000,
@@ -50,6 +53,7 @@ const Cadastrar = () => {
                             <div className='form-floating mb-3'>
                                 <input
                                     {...register('nome')}
+                                    required
                                     type="text"
                                     className="form-control"
                                     id="nome"
@@ -63,6 +67,7 @@ const Cadastrar = () => {
                             <div className='form-floating mb-3'>
                                 <input
                                     {...register('cpf')}
+                                    required
                                     type="number"
                                     className="form-control"
                                     id="cpf"
@@ -74,6 +79,7 @@ const Cadastrar = () => {
                             <div className='form-floating mb-3'>
                                 <input
                                     {...register('numeroCelular')}
+                                    required
                                     type="number"
                                     className="form-control"
                                     id="numeroCelular"
@@ -87,6 +93,7 @@ const Cadastrar = () => {
                             <div className='form-floating mb-3'>
                                 <input
                                     {...register('email')}
+                                    required
                                     type="email"
                                     className="form-control"
                                     id="email"
@@ -98,6 +105,7 @@ const Cadastrar = () => {
                             <div className='form-floating mb-3'>
                                 <input
                                     {...register('confirmarEmail')}
+                                    required
                                     type="email"
                                     className="form-control"
                                     id="confirmarEmail"
@@ -111,6 +119,7 @@ const Cadastrar = () => {
                             <div className='form-floating'>
                                 <input
                                     {...register('senha')}
+                                    required
                                     type="password"
                                     className="form-control"
                                     id="senha"
@@ -122,6 +131,7 @@ const Cadastrar = () => {
                             <div className='form-floating'>
                                 <input
                                     {...register('confirmarSenha')}
+                                    required
                                     type="password"
                                     className="form-control"
                                     id="confirmarSenha"
@@ -137,7 +147,9 @@ const Cadastrar = () => {
                         </label>
                     </div>
 
-                    <button className="w-100 btn btn-lg btn-primary">Cadastrar</button>
+                    <button disabled={carregando} className="w-100 botao botao-primario">
+                        {carregando ? <div className="px-4 text-lg animate-spin bi bi-arrow-repeat"></div> : 'Cadastrar'}
+                    </button>
                     <p className="mt-5 mb-3 text-muted">Possui uma conta Rifaweb?  <Link href={'/login'}>Entrar</Link> </p>
                 </form>
             </div>

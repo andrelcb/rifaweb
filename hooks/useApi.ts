@@ -1,3 +1,4 @@
+import { ParsedUrlQuery } from "querystring";
 import { getAPIClient } from "./axios";
 
 const api = getAPIClient();
@@ -49,12 +50,16 @@ export const useApi = () => ({
         return resposta.data;
 
     },
-    reservarNumeros: async (data: object, numeros: object, id: number, valorTotal: number) => {
-        const resposta = await api.post(`/rifa/${id}/reservar-numeros/`, { data, numeros, valorTotal });
+    reservarNumeros: async (data: object, id: number) => {
+        const resposta = await api.post(`/rifa/${id}/reservar-numeros/`, data);
         return resposta.data;
     },
     buscaDadosReserva: async (id: string) => {
         const resposta = await api.get(`/reserva/${id}/buscar-dados-reserva`);
+        return resposta.data;
+    },
+    buscarNumerosPedidoCelular: async (rifaId: number, data: object) => {
+        const resposta = await api.get(`/buscar-numeros-pedido-celular/${rifaId}`, { params: data });
         return resposta.data;
     },
     buscaCategoriaRifa: async () => {
@@ -67,7 +72,11 @@ export const useApi = () => ({
         return resposta.data
     },
     geraCobrancaPix: async (data: object) => {
-        const resposta = await api.post(`/gerarCobrancaPix`, data);
+        const resposta = await api.post(`/gerar-cobranca-pix`, data);
+        return resposta.data;
+    },
+    geraQrCodePix: async (id: string) => {
+        const resposta = await api.get(`/gera-qrcode-pix/${id}`);
         return resposta.data;
     },
 })

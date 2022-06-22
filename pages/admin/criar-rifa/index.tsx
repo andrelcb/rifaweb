@@ -280,7 +280,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                             premio: ""
                                                         })
                                                     }
-                                                    className="btn btn-success mt-2">
+                                                    className="botao botao-sucesso mt-2">
                                                     <i className="bi bi-plus-square"></i> Adicionar Premio
                                                 </button>
 
@@ -289,10 +289,8 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                     </div>
                                     <span className="px-3 text-sm mt text-slate-600">Ao criar esta rifa declaro ter lido e concordado com os <a href="">termos de uso</a> da plataforma RifaWeb.</span>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                        <button type="submit"  className={"btn btn-primary inline-flex justify-center px-4"}>
-                                            {carregando
-                                                ? <div className="spinner-border text-primary" role="status"></div>
-                                                : 'Criar rifa'}
+                                        <button type="submit" className='botao botao-primario inline-flex justify-center px-4'>
+                                            {carregando ? <div className="px-4 animate-spin bi bi-arrow-repeat"></div> : 'Criar Rifa'}
                                         </button>
                                     </div>
                                 </div>

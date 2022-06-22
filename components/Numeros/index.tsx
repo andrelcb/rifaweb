@@ -14,28 +14,28 @@ export const Numeros = ({ item, onClick, filtro }: Props) => {
             {item.status == 'Disponivel' && filtro == 'Todos' &&
                 <label
                     onClick={onClick}
-                    className={`disponivel numero text-center rounded-lg h-10 w-20 cursor-pointer hover:bg-blue-200 bg-gray-300 p-2 m-1`}>
+                    className={`disponivel numero text-gray-500 bg-gray-100 hover:bg-[#4877dd] hover:text-white`}>
                     {item.numero}
                 </label>
             }
             {item.status == 'Selecionado' && filtro == 'Todos' &&
                 <label
                     onClick={onClick}
-                    className={`disponivel numero text-white text-center rounded-lg h-10 w-20 cursor-pointer bg-[#274584] p-2 m-1`}>
+                    className={`disponivel numero bg-[#274584] text-white`}>
                     {item.numero}
                 </label>
-            } 
+            }
             {item.status == 'Reservado' && filtro == 'Todos' &&
                 <label
                     onClick={onClick}
-                    className={`reservado numero text-center text-white font-bold rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1`}>
+                    className={`reservado numero bg-yellow-400 text-white`}>
                     {item.numero}
                 </label>
             }
             {item.status == 'Pago' && filtro == 'Todos' &&
                 <label
                     onClick={onClick}
-                    className={`pago numero text-center rounded-lg h-10 w-20 cursor-pointer bg-green-500 p-2 m-1`}>
+                    className={`pago numero bg-green-500 text-white`}>
                     {item.numero}
                 </label>
             }
@@ -44,7 +44,7 @@ export const Numeros = ({ item, onClick, filtro }: Props) => {
             {item.status == 'Reservado' && filtro == 'Reservado' &&
                 <label
                     onClick={onClick}
-                    className={`reservado numero text-center text-white font-bold rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1`}>
+                    className={`reservado numero bg-yellow-400 text-white`}>
                     {item.numero}
                 </label>
             }
@@ -53,7 +53,7 @@ export const Numeros = ({ item, onClick, filtro }: Props) => {
             {item.status == 'Pago' && filtro == 'Pago' &&
                 <label
                     onClick={onClick}
-                    className={`pago numero text-center rounded-lg h-10 w-20 cursor-pointer bg-green-500 p-2 m-1`}>
+                    className={`pago numero text-white bg-green-500`}>
                     {item.numero}
                 </label>
             }
@@ -62,7 +62,7 @@ export const Numeros = ({ item, onClick, filtro }: Props) => {
             {item.status == 'Disponivel' && filtro == 'Disponivel' &&
                 <label
                     onClick={onClick}
-                    className={`disponivel numero text-center rounded-lg h-10 w-20 cursor-pointer hover:bg-blue-200 bg-gray-300 p-2 m-1`}>
+                    className={`disponivel numero text-gray-500 bg-gray-100  hover:bg-[#4877dd] hover:text-white `}>
                     {item.numero}
                 </label>
             }

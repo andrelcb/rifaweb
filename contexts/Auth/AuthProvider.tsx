@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     const removeToken = () => {
         destroyCookie(undefined, 'rifaAuthToken')
     }
+    
     const setToken = (token: string) => {
         setCookie(undefined, 'rifaAuthToken', token, {
             maxAge: 60 * 60 * 1, //1hora
