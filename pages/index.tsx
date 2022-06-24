@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import { Layout } from '../components/Layout'
 import styles from '../styles/Home.module.css'
-import HomeFoto from '../public/HOME.png'
+import HomeFoto from '../public/home.jpg'
 import Link from 'next/link'
 import { RifaItem } from '../components/RifaItem'
 import { useApi } from '../hooks/useApi'
@@ -20,26 +20,21 @@ const Home = ({ rifa }: Props) => {
   return (
     <Layout>
       <>
-        <div className={styles.homeContainer}>
+        <div className="bg-[#1759ff]">
           <div className="container text-white mx-auto">
             <div className="row align-items-center">
               <div className={`hidden md:block col-6 mx-auto col-md-6 order-md-2`}>
-                <Image className={`img-fluid mb-3 mb-md-0`} src={HomeFoto} width={1024} height={700} />
+                <Image className={`img-fluid mb-3 mb-md-0`} src={HomeFoto} width={1200} height={800} />
               </div>
               <div className="col-md-6 text-start">
-                <h1 className={styles.tituloHome}>Crie suas rifas e publique gratuitamente</h1>
-                <p className="textCenter">
+                <h1 className="">Crie suas rifas e publique gratuitamente</h1>
+                <p className="text-center mt-3">
                   Crie e gerencie suas rifas de forma prática em segundos com o melhor preço do mercado.
                 </p>
-                {!auth.usuario
-                  ? <div className="flex-column mt-5 mb-4">
-                    <Link href={'/cadastrar'}><a className='botao botao-sky py-3'><i className="bi bi-person"> </i>Criar minha conta</a></Link>
-                  </div>
-                  : <div className="flex-column mt-5 mb-4">
-                    <Link href={'/admin/'}><a className='botao botao-sky py-3'>Gerencie suas rifa</a></Link>
-                  </div>
-                }
-                <p className="text-muted text-start">
+                <div className="flex-column mt-5 mb-4">
+                  <Link href={'/admin/'}><button className='botao text-black bg-slate-50 hover:bg-slate-200'><i className="bi bi-person"> </i>Criar minha rifa</button></Link>
+                </div>
+                <p className="text-start">
                   O melhor site para sua rifa.
                 </p>
               </div>
@@ -60,7 +55,7 @@ const Home = ({ rifa }: Props) => {
 
             <div className='text-center mt-20'>
               <Link href={'/rifa'}>
-                <a className='botao botao-primario'>Ver todas as rifas</a>
+                <button className='botao botao-primario'>Ver todas as rifas</button>
               </Link>
             </div>
           </div>

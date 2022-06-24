@@ -32,7 +32,8 @@ interface FormData {
 
 type Pedidos = {
     id: number,
-    numeros: string
+    numeros: string,
+    status: string
 }
 
 const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numerosPagos }: Props) => {
@@ -602,7 +603,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                             <Link href={`/reserva/${pedido.id}`}>
                                                 <label
                                                     key={pedido.id}
-                                                    className="text-white numero bg-orange-400 hover:bg-orange-300"
+                                                    className={`text-white numero ${pedido.status == 'Reservado' ? 'bg-orange-400 hover:bg-orange-300' : 'bg-green-500 hover:bg-green-300'}`}
                                                     data-bs-placement="bottom"
                                                     title="Clique para efetuar o pagamento">
                                                     {pedido.numeros}
@@ -638,6 +639,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const paramentros = { link_rifa: link };
     const resposta = await api.buscaRifas(paramentros);
     const rifas: Rifa[] = resposta.rifas;
+
+    if(rifas.length === 0) {
+        return {
+            redirect: {
+                destination: '/rifa',
+                permanent: false
+            }
+        }
+    }
 
     //busca premio
     const respostaPremio = await api.buscaPremioRifa(rifas[0].id);

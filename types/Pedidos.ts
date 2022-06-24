@@ -4,6 +4,6 @@ export type Pedidos = {
     nomeCliente: string,
     numeroCelular: string,
     valorTotal: string,
-    status: string,
+    statusPedido: string,
     dataCadastro: string
 }

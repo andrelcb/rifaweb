@@ -27,26 +27,23 @@ export const Navbar = () => {
                             <div className="offcanvas-body">
                                 <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                                     <li className="nav-item">
-                                        <Link href={'/'}><a className='nav-link text-white'>Inicio</a></Link>
+                                        <Link href={'/'}><a className='nav-link text-white hover:bg-slate-50 hover:bg-blue-900 rounded mx-2'>Inicio</a></Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href={'/termo-de-uso'}><a className='nav-link text-white'>Termo de uso</a></Link>
+                                        <Link href={'/termo-de-uso'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Termo de uso</a></Link>
                                     </li>
                                 </ul>
 
                                 <div className="d-flex mt-3 mt-lg-0" role="search">
                                     {!auth.usuario ? (
                                         <>
-                                            <Link href={'/login'}>
-                                                <a className="btn btn-outline-light me-2">Fazer Login</a>
-                                            </Link>
-                                            <Link href={'/cadastrar'}>
-                                                <a className="botao botao-sky"><i className="bi bi-person"></i>Criar Conta</a>
+                                            <Link href={'/admin'}>
+                                                <a className="botao bg-slate-50 hover:bg-slate-200 text-black"><i className="bi bi-person"></i>Criar minha rifa</a>
                                             </Link>
                                         </>
                                     ) : (
                                         <Link href={'/admin'}>
-                                            <a className="botao botao-sky">{auth.usuario.nome}</a>
+                                            <a className="botao bg-white text-black">{auth.usuario.nome}</a>
                                         </Link>
                                     )}
                                 </div>

@@ -20,7 +20,7 @@ export const SideBar = ({ classSideBar }: Props) => {
                 <div className="align-items-center p-3">
                     <div className="row">
                         <div className="d-flex col-sm-12 ">
-                            <img src={auth.usuario?.imagem_perfil ? auth.usuario?.imagem_perfil : '/usuarioPadrao.png'} alt="" width="42" height="42" className="rounded-circle me-2" />
+                            <img src={auth.usuario?.imagem_perfil ? auth.usuario?.imagem_perfil : '/usuarioPadrao.png'} alt="" width="42" height="42" className="text-[#1759ff]rounded-circle me-2" />
                             <span className="fs-4">{auth.usuario?.nome}</span>
                         </div>
                         <div className="col-sm-12 mt-3">

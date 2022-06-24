@@ -60,7 +60,7 @@ const editarRifa = ({ rifa }: Props) => {
                                                                                 required
                                                                                 placeholder="Exemplo: IPHONE 13 PRO MAX"
                                                                                 type="text"
-                                                                                value={rifa[0].nome}
+                                                                                defaultValue={rifa[0].nome}
                                                                                 autoComplete="given-name"
                                                                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
                                                                             />
@@ -73,7 +73,7 @@ const editarRifa = ({ rifa }: Props) => {
                                                                                 required
                                                                                 placeholder="Exemplo: iphone-13-pro-max"
                                                                                 type="text"
-                                                                                value={rifa[0].link_rifa}
+                                                                                defaultValue={rifa[0].link_rifa}
                                                                                 autoComplete="family-name"
                                                                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
                                                                             />
@@ -84,7 +84,7 @@ const editarRifa = ({ rifa }: Props) => {
                                                                             <textarea
                                                                                 {...register('descricao')}
                                                                                 required
-                                                                                value={rifa[0].descricao}
+                                                                                defaultValue={rifa[0].descricao}
                                                                                 autoComplete="regulamento"
                                                                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
                                                                             />
@@ -94,7 +94,7 @@ const editarRifa = ({ rifa }: Props) => {
                                                                             <textarea
                                                                                 {...register('regulamento', { required: "Esse campo é obrigatorio" })}
                                                                                 required
-                                                                                value={rifa[0].regulamento}
+                                                                                defaultValue={rifa[0].regulamento}
                                                                                 autoComplete="regulamento"
                                                                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
                                                                             />
@@ -131,7 +131,7 @@ const editarRifa = ({ rifa }: Props) => {
                                                                                     required
                                                                                     type="number"
                                                                                     placeholder="Valor"
-                                                                                    value={rifa[0].valor_numero}
+                                                                                    defaultValue={rifa[0].valor_numero}
                                                                                     autoComplete="valorNumero"
                                                                                     className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none sm:text-sm border-gray-300"
                                                                                 />

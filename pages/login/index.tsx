@@ -3,7 +3,8 @@ import Router from 'next/router';
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
-import styles from './styles.module.css';
+import { GetServerSideProps } from "next";
+import { parseCookies } from 'nookies';
 
 const Login = () => {
     const auth = useContext(AuthContext);
@@ -12,10 +13,8 @@ const Login = () => {
     const [carregando, setCarregando] = useState<boolean>(false);
 
     useEffect(() => {
-        if (auth.usuario) {
-            Router.push('/admin');
-        }
-    })
+
+    }, [])
 
     const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -100,3 +99,21 @@ const Login = () => {
 }
 
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { 'rifaAuthToken': token } = parseCookies(context);
+    console.log(token);
+    if (token) {
+        return {
+            redirect: {
+                destination: '/admin',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+
+}

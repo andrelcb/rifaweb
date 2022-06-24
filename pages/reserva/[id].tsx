@@ -24,7 +24,9 @@ const Reserva = ({ reserva }: Props) => {
     const [carregando, setCarregando] = useState<boolean>(false);
 
     useEffect(() => {
-        verificaTxid();
+        if (reserva.status == 'Reservado' && reserva.txid != null) {
+            verificaTxid();
+        }
     }, [])
 
     const verificaTxid = async () => {
@@ -77,15 +79,15 @@ const Reserva = ({ reserva }: Props) => {
     return (
         <>
             <ToastContainer />
-            <div className="py-5 h-50 px-5 bgPrimary mx-auto text-white">
+            <div className={`py-5 h-50 px-5 ${reserva.status == 'Reservado' ? 'bgPrimary' : 'bg-green-500'} mx-auto text-white`}>
                 <Link href={'/'}>
                     <a className="text-white navbar-brand"><img className='d-inline-block align-text-top' src='/logoTicket.png' width={30} height={30} /> Rifaweb</a>
                 </Link>
                 <div className="container">
                     <div className="row">
                         <div className="text-start col-12 col-lg-7 col-xl-6 mr-auto mb-8 mb-lg-0 mt-4">
-                            <h1 className="font-bold text-4xl md:text-5xl">A sua reserva foi confirmada com sucesso. </h1>
-                            <p className="mt-4">Agora é só efetuar o pagamento para participar.</p>
+                            <h1 className="font-bold text-4xl md:text-5xl">{reserva.status == 'Reservado' ? 'A sua reserva foi confirmada com sucesso.' : 'O seus números já foram pagos!'} </h1>
+                            <p className="mt-4">{reserva.status == 'Reservado' ? 'Agora é só efetuar o pagamento para participar.' : 'Agora é só esperar a data do sorteio. Boa sorte!'}</p>
                         </div>
 
                         <div className="col-12 col-lg-5 col-xl-5 text-center">
@@ -98,22 +100,24 @@ const Reserva = ({ reserva }: Props) => {
             <div className="container">
 
                 {/* AVISO */}
-                <div className="bg-red-500 border-t-4 border-red-900 rounded-b text-white px-4 py-3 shadow-md mt-3" role="alert">
-                    <div className="flex ">
-                        <div className="py-1"><svg className="fill-current h-6 w-6 text-white mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg></div>
-                        <div>
-                            <p className="font-bold">Atenção</p>
-                            <p className="text-lg font-mono">Garanta seu número efetuando o pagamento em até 24 hora(s). Caso contrario seus numeros serão expirados.</p>
+                {reserva.status == 'Reservado' &&
+                    <div className="bg-red-500 border-t-4 border-red-900 rounded-b text-white px-4 py-3 shadow-md mt-3" role="alert">
+                        <div className="flex ">
+                            <div className="py-1"><svg className="fill-current h-6 w-6 text-white mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg></div>
+                            <div>
+                                <p className="font-bold">Atenção</p>
+                                <p className="text-lg font-mono">Garanta seu número efetuando o pagamento em até 24 hora(s). Caso contrario seus numeros serão expirados.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
 
                 {/* INFORMAÇÕES DA RESERVA */}
                 <div className="row">
                     <div className="col-sm-12 col-md-12 col-lg-8">
                         <div className="px-2 py-6 sm:px-0">
                             <div className="card shadow-md shadow-blue-200 p-4">
-                                <h3><i className="bi bi-info-circle"></i> Informações da reserva</h3>
+                                <h3><i className="bi bi-info-circle mr-2"></i>{reserva.status == 'Reservado' ? 'Informações da reserva.' : 'Pedido Pago.'} </h3>
                                 <div className="row mt-3">
                                     <div className="col-sm-4 col-md-4 col-lg-6">
                                         <span>Participante:</span>
@@ -132,7 +136,7 @@ const Reserva = ({ reserva }: Props) => {
                                 </div>
                                 <div className="row mt-5">
                                     <div className="col-sm-4 col-md-4 col-lg-6">
-                                        <span>Valor total reserva:</span>
+                                        <span>Valor total:</span>
                                     </div>
                                     <div className="col-sm-4 col-md-4 col-lg-6 text-green-600 text-lg font-semibold">
                                         <span>R$ {reserva.valor_total}</span>
@@ -145,11 +149,11 @@ const Reserva = ({ reserva }: Props) => {
                     <div className="col-sm-12 col-md-12 col-lg-4">
                         <div className="px-2 py-6 sm:px-0">
                             <div className="card shadow-md shadow-blue-200 p-4">
-                                <h3><i className="text-blue-800 bi bi-ticket-perforated"></i> Números reservados</h3>
+                                <h3><i className="text-blue-800 bi bi-ticket-perforated"></i> {reserva.status == 'Reservado' ? 'Números reservados.' : 'Números pagos.'} </h3>
                                 <div className="row mt-3">
                                     <div className="col-sm-12 col-md-12">
                                         {reserva.numeros.map((numero, index) => (
-                                            <label key={index} className="text-center rounded-lg h-10 w-20 cursor-pointer bg-warning p-2 m-1">{numero.numero}</label>
+                                            <label key={index} className={`text-center rounded-lg h-10 w-20 cursor-pointer ${reserva.status == 'Reservado' ? 'bg-yellow-400' : 'bg-green-500 text-white'} p-2 m-1`}>{numero.numero}</label>
                                         ))}
                                     </div>
                                 </div>
@@ -162,7 +166,7 @@ const Reserva = ({ reserva }: Props) => {
                     (<div className="flex items-center mx-auto">
                         <div className="flex-col">
                             <div className="px-2 py-6 sm:px-0">
-                                {imagemQrCode == "" &&
+                                {imagemQrCode == "" && reserva.status == 'Reservado' &&
                                     <>
                                         <h2><i className="bi bi-credit-card"></i> Selecione a forma de pagamento</h2>
                                         <div className="row col-sm-4">
@@ -188,7 +192,7 @@ const Reserva = ({ reserva }: Props) => {
                 }
 
 
-                {imagemQrCode != "" &&
+                {imagemQrCode != "" && reserva.status == 'Reservado' &&
                     <div className="flex justify-center items-center flex-col mx-auto shadow p-4 relative">
                         <h4 className="text-2xl"><i className="bi bi-qr-code-scan"></i> Leia o QR Code abaixo utilizando o app do seu banco escolhendo a opção PIX ou copie a chave de pagamento.</h4>
                         <div className="flex-row mt-3">

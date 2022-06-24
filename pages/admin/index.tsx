@@ -85,8 +85,8 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {pedidos?.map((pedido) => (
-                                                                <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
+                                                            {pedidos?.map((pedido, index) => (
+                                                                <tr key={index} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
                                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                         {pedido.nomeRifa}
                                                                     </td>
@@ -101,7 +101,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                                         {pedido.numeros}
                                                                     </td>
                                                                     <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                                                        <span className={` text-center px-3 rounded-md ${pedido.status == 'Pago' ? 'bg-success' : 'bg-warning'} p-2 text-white font-bold`}>{pedido.status}</span>
+                                                                    <span className={`numero text-white ${pedido.statusPedido == 'Pago' ? 'bg-green-500' : 'bg-yellow-400'}`}>{pedido.statusPedido}</span>
                                                                     </td>
                                                                 </tr>
                                                             ))}

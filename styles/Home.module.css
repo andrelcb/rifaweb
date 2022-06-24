@@ -1,19 +1,1 @@
-.homeContainer {
-  background-color: #1a2e59;
-}
 
-.tituloHome {
-  font-weight: 650;
-  font-size: 70px;
-}
-
-@media screen and (max-width: 900px) {
-  .tituloHome {
-    font-weight: 650;
-    font-size: 30px;
-  }
-  .imageInicio{
-    visibility: hidden !important;
-    display: none !important;
-  }
-}

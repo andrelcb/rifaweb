@@ -71,6 +71,10 @@ export const useApi = () => ({
         const resposta = await api.post('/rifa/inserir-rifa', data, { headers: { 'Content-Type': 'multipart/form-data' } });
         return resposta.data
     },
+    buscaPedidos: async (params: object) => {
+        const resposta = await api.get(`/buscar-pedidos/`, { params: params });
+        return resposta.data;
+    },
     geraCobrancaPix: async (data: object) => {
         const resposta = await api.post(`/gerar-cobranca-pix`, data);
         return resposta.data;
