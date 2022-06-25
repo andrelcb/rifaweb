@@ -72,7 +72,7 @@ export const useApi = () => ({
         return resposta.data
     },
     buscaPedidos: async (params: object) => {
-        const resposta = await api.get(`/buscar-pedidos/`, { params: params });
+        const resposta = await api.get(`/pedidos/`, { params: params });
         return resposta.data;
     },
     geraCobrancaPix: async (data: object) => {

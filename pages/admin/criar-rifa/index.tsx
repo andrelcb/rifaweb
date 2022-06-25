@@ -134,6 +134,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="tituloRifa" className="block text-sm font-medium text-gray-700">Título da rifa</label>
+
                                                 <input
                                                     {...register('nome')}
                                                     required
@@ -148,16 +149,19 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="linkRifa" className="block text-sm font-medium text-gray-700">Link da rifa</label>
-                                                <input
-                                                    {...register('linkRifa')}
-                                                    required
-                                                    placeholder="Exemplo: iphone-13-pro-max"
-                                                    type="text"
-                                                    name="linkRifa"
-                                                    id="linkRifa"
-                                                    autoComplete="family-name"
-                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
-                                                />
+                                                <div className="mt-1 flex rounded-md shadow-sm">
+                                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">http://rifaweb/rifa/</span>
+                                                    <input
+                                                        {...register('linkRifa')}
+                                                        required
+                                                        placeholder="Exemplo: iphone-13-pro-max"
+                                                        type="text"
+                                                        name="linkRifa"
+                                                        id="linkRifa"
+                                                        autoComplete="family-name"
+                                                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none sm:text-sm border-gray-300"
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">

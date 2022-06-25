@@ -545,78 +545,75 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                     </>
                 ) : null}
 
-                {showModalNumeros &&
-                    <>
 
-                        <div className="fixed-top w-screen h-screen flex justify-center items-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none"                        >
-                            <div className="w-auto my-1 mx-auto max-w-xl">
-                                {/*content*/}
-                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
-                                    {/* body */}
-                                    <div className="relative p-4 flex-auto">
-                                        <button
-                                            className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                            onClick={() => setShowModalNumeros(false)}
-                                        >
-                                            <span className=" text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                <i className="bi bi-x-lg"></i>
-                                            </span>
-                                        </button>
-                                        <h3 className="text-2xl"><i className="text-md bi bi-ticket-perforated mr-3"></i>Buscar meus números</h3>
-                                        <div className="body text-black mt-4">
-                                            <form onSubmit={handleSubmit(buscaNumerosRifa)}>
-                                                <div className="input-group flex-nowrap mb-1 col-md-4">
-                                                    <span className="input-group-text" id="addon-wrapping"><i className="bi bi-ticket-perforated"></i></span>
-                                                    <Controller
-                                                        name="celular"
-                                                        aria-label="celular"
-                                                        control={control}
-                                                        rules={{
-                                                            required: 'Esse campo é obrigatório',
-                                                            minLength: {
-                                                                value: 14,
-                                                                message: "O numero do celular precisar ter no minimo 9 digitos"
-                                                            },
-                                                        }}
-                                                        render={({ field }) => <NumberFormat
-                                                            {...field}
-                                                            format="(##) #########"
-                                                            mask=""
-                                                            className={`form-control ${errors.celular && 'is-invalid'}`}
-                                                            placeholder="Celular com DDD"
-                                                            aria-describedby="addon-wrapping" />}
-                                                    />
-                                                    <button
-                                                        disabled={carregando}
-                                                        type="submit"
-                                                        className='botao botao-primario'>
-                                                        {carregando ? <div className="px-4 animate-spin bi bi-arrow-repeat"></div> : 'Pesquisar'}
-                                                    </button>
-                                                </div>
-                                                {errors.celular ? <p className="text-red-600">{errors.celular.message}</p> : null}
-                                            </form>
+
+                <div className={`opacity-0 pointer-events-none fixed transition-all ease-out delay-200 w-full h-full top-0 left-0 ${showModalNumeros ? 'flex' : 'hidden'}  items-center justify-center`}>
+                    <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
+                    <div className="w-auto my-1 mx-auto max-w-xl">
+                        {/*content*/}
+                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
+                            {/* body */}
+                            <div className="relative p-4 flex-auto">
+                                <button
+                                    className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                    onClick={() => setShowModalNumeros(false)}
+                                >
+                                    <span className=" text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        <i className="bi bi-x-lg"></i>
+                                    </span>
+                                </button>
+                                <h3 className="text-2xl"><i className="text-md bi bi-ticket-perforated mr-3"></i>Buscar meus números</h3>
+                                <div className="body text-black mt-4">
+                                    <form onSubmit={handleSubmit(buscaNumerosRifa)}>
+                                        <div className="input-group flex-nowrap mb-1 col-md-4">
+                                            <span className="input-group-text" id="addon-wrapping"><i className="bi bi-ticket-perforated"></i></span>
+                                            <Controller
+                                                name="celular"
+                                                aria-label="celular"
+                                                control={control}
+                                                rules={{
+                                                    required: 'Esse campo é obrigatório',
+                                                    minLength: {
+                                                        value: 14,
+                                                        message: "O numero do celular precisar ter no minimo 9 digitos"
+                                                    },
+                                                }}
+                                                render={({ field }) => <NumberFormat
+                                                    {...field}
+                                                    format="(##) #########"
+                                                    mask=""
+                                                    className={`form-control ${errors.celular && 'is-invalid'}`}
+                                                    placeholder="Celular com DDD"
+                                                    aria-describedby="addon-wrapping" />}
+                                            />
+                                            <button
+                                                disabled={carregando}
+                                                type="submit"
+                                                className='botao botao-primario'>
+                                                {carregando ? <div className="px-4 animate-spin bi bi-arrow-repeat"></div> : 'Pesquisar'}
+                                            </button>
                                         </div>
-                                    </div>
-                                    {/*footer*/}
-                                    <div className="items-center justify-start px-4 pb-4 border-slate-200 rounded-b">
-                                        {pedidos?.map((pedido) => (
-                                            <Link href={`/reserva/${pedido.id}`}>
-                                                <label
-                                                    key={pedido.id}
-                                                    className={`text-white numero ${pedido.status == 'Reservado' ? 'bg-orange-400 hover:bg-orange-300' : 'bg-green-500 hover:bg-green-300'}`}
-                                                    data-bs-placement="bottom"
-                                                    title="Clique para efetuar o pagamento">
-                                                    {pedido.numeros}
-                                                </label>
-                                            </Link>
-                                        ))}
-                                    </div>
+                                        {errors.celular ? <p className="text-red-600">{errors.celular.message}</p> : null}
+                                    </form>
                                 </div>
                             </div>
+                            {/*footer*/}
+                            <div className="items-center justify-start px-4 pb-4 border-slate-200 rounded-b">
+                                {pedidos?.map((pedido) => (
+                                    <Link href={`/reserva/${pedido.id}`}>
+                                        <label
+                                            key={pedido.id}
+                                            className={`text-white numero ${pedido.status == 'Reservado' ? 'bg-orange-400 hover:bg-orange-300' : 'bg-green-500 hover:bg-green-300'}`}
+                                            data-bs-placement="bottom"
+                                            title="Clique para efetuar o pagamento">
+                                            {pedido.numeros}
+                                        </label>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                        <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
-                    </>
-                }
+                    </div>
+                </div>
             </>
         </Layout >
     )
@@ -640,7 +637,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const resposta = await api.buscaRifas(paramentros);
     const rifas: Rifa[] = resposta.rifas;
 
-    if(rifas.length === 0) {
+    if (rifas.length === 0) {
         return {
             redirect: {
                 destination: '/rifa',

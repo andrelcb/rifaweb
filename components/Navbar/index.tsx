@@ -27,7 +27,7 @@ export const Navbar = () => {
                             <div className="offcanvas-body">
                                 <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                                     <li className="nav-item">
-                                        <Link href={'/'}><a className='nav-link text-white hover:bg-slate-50 hover:bg-blue-900 rounded mx-2'>Inicio</a></Link>
+                                        <Link href={'/'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Inicio</a></Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link href={'/termo-de-uso'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Termo de uso</a></Link>

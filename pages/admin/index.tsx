@@ -12,7 +12,7 @@ import Link from "next/link";
 
 type Props = {
     rifa: Rifa[],
-    pedidos: Pedidos[]
+    pedidos: Pedidos
 }
 const Admin = ({ rifa, pedidos }: Props) => {
     const auth = useContext(AuthContext);
@@ -56,7 +56,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                     ))}
                                 </div>
                             </div>
-                            {pedidos.length > 0 &&
+                            {pedidos.data.length > 0 &&
                                 <div className="mx-auto mt-10 mb-8 p-8 shadow-lg">
                                     <h3>Ultimos pedidos</h3>
 
@@ -85,7 +85,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {pedidos?.map((pedido, index) => (
+                                                            {pedidos.data.map((pedido, index) => (
                                                                 <tr key={index} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
                                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                         {pedido.nomeRifa}
@@ -151,8 +151,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const rifas: Rifa[] = resposta.data.rifas;
 
     //busca ultimos pedidos
-    const respostaPedidos = await apiClient.get(`/buscar-pedidos`);
-    const pedidos: Pedidos[] = respostaPedidos.data.pedidos;
+    const respostaPedidos = await apiClient.get(`/pedidos`);
+    const pedidos: Pedidos = respostaPedidos.data.pedidos;
 
     return {
         props: {

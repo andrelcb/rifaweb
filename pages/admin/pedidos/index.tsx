@@ -6,7 +6,8 @@ import { getAPIClient } from "../../../hooks/axios";
 import { useApi } from "../../../hooks/useApi";
 import { Pedidos } from "../../../types/Pedidos";
 import { Rifa } from "../../../types/Rifa";
-import { status } from "../../../utils/Status";
+import { status } from "../../../utils/status";
+import Pagination from "react-js-pagination";
 
 type Props = {
     rifa: Rifa[],
@@ -16,7 +17,9 @@ const PedidosPagina = ({ rifa }: Props) => {
     const api = useApi();
     const [rifaFiltro, setRifaFiltro] = useState<string>();
     const [statusFiltro, setStatusFiltro] = useState<string>();
-    const [pedidos, setPedidos] = useState<Array<Pedidos>>();
+
+    const [pedidos, setPedidos] = useState<Pedidos>();
+
     const [carregando, setCarregando] = useState<boolean>(false);
 
     useEffect(() => {
@@ -24,16 +27,16 @@ const PedidosPagina = ({ rifa }: Props) => {
 
     }, [statusFiltro, rifaFiltro])
 
-    const buscaPedidos = async () => {
+    const buscaPedidos = async (page: number = 1) => {
         //busca ultimos pedidos
-        const params = { rifasId: rifaFiltro, statusPedido: statusFiltro }
+        const params = { page: page, rifasId: rifaFiltro, statusPedido: statusFiltro }
         setCarregando(true);
         const respostaPedidos = await api.buscaPedidos(params);
         if (respostaPedidos) {
-            if (respostaPedidos.pedidos.length > 0) {
+            if (respostaPedidos.pedidos.data.length > 0) {
                 setPedidos(respostaPedidos.pedidos);
             } else {
-                setPedidos([]);
+                setPedidos(respostaPedidos.pedidos);
 
             }
         }
@@ -101,7 +104,7 @@ const PedidosPagina = ({ rifa }: Props) => {
                                             </thead>
 
                                             <tbody>
-                                                {pedidos?.map((pedido, index) => (
+                                                {pedidos?.data.map((pedido, index) => (
                                                     <tr key={index} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             {pedido.nomeRifa}
@@ -121,7 +124,7 @@ const PedidosPagina = ({ rifa }: Props) => {
                                                         </td>
                                                     </tr>
                                                 ))}
-                                                {pedidos?.length === 0 &&
+                                                {pedidos?.data.length === 0 &&
                                                     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
                                                         <td className="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-red-500">
                                                             Não foi encotrado pedidos. Tente outro filtro.
@@ -130,6 +133,20 @@ const PedidosPagina = ({ rifa }: Props) => {
                                                 }
                                             </tbody>
                                         </table>
+                                        <div className="flex mt-4 justify-center">
+                                            {pedidos && pedidos.data.length > 0 &&
+                                                <Pagination
+                                                    activePage={pedidos.current_page}
+                                                    totalItemsCount={pedidos.total}
+                                                    itemsCountPerPage={pedidos.per_page}
+                                                    onChange={(numeroPagina) => buscaPedidos(numeroPagina)}
+                                                    itemClass={'page-item'}
+                                                    linkClass={'page-link'}
+                                                    firstPageText="Primeira Página"
+                                                    lastPageText={"Última Página"}
+                                                />}
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
