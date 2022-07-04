@@ -7,22 +7,3 @@
   position: relative;
   transition: max-height 1s ease-in-out;
 }
-.sideBar
-
-.navLink {
-  text-decoration: none;
-  color: rgb(255, 255, 255) !important;
-  display: block;
-  padding: 0.5rem 1rem;
-}
-
-.navLink:focus,
-.navLink:hover {
-  /* background-color: #162649 !important; */
-  color: rgb(202, 202, 202) !important;
-}
-
-.navLinkActive {
-  background-color: #113dac;
-  padding: 10px;
-}

@@ -22,6 +22,10 @@ export const useApi = () => ({
         const resposta = await api.post('/auth/cadastrar', data);
         return resposta.data
     },
+    atualizarUsuario: async (data: object) => {
+        const resposta = await api.post('/usuario/atualizar-usuario', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        return resposta.data
+    },
 
     logout: async () => {
         const resposta = await api.post('/auth/logout');
@@ -69,6 +73,34 @@ export const useApi = () => ({
     },
     cadastrarRifa: async (data: object) => {
         const resposta = await api.post('/rifa/inserir-rifa', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        return resposta.data
+    },
+    atualizarRifa: async (id: number, data: object) => {
+        const resposta = await api.put(`/rifa/${id}/atualizar-rifa`, data);
+        return resposta.data
+    },
+    adicionarImagem: async (id: number, data: object) => {
+        const resposta = await api.post(`/rifa/${id}/adicionar-imagem-rifa`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        return resposta.data
+    },
+    adicionarPremio: async (id: number, data: object) => {
+        const resposta = await api.post(`/rifa/${id}/adicionar-premio-rifa`, data);
+        return resposta.data
+    },
+    adicionarPromocao: async (id: number, data: object) => {
+        const resposta = await api.post(`/rifa/${id}/adicionar-promocao-rifa`, data);
+        return resposta.data
+    },
+    deletarImagem: async (id: number) => {
+        const resposta = await api.delete(`/rifa/${id}/deletar-imagem`);
+        return resposta.data
+    },
+    deletarPremio: async (id: number) => {
+        const resposta = await api.delete(`/rifa/${id}/deletar-premio`);
+        return resposta.data
+    },
+    deletarPromocao: async (id: number) => {
+        const resposta = await api.delete(`/rifa/${id}/deletar-promocao`);
         return resposta.data
     },
     buscaPedidos: async (params: object) => {

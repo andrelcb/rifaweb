@@ -11,16 +11,16 @@ type Props = {
 export const LayoutAdmin = ({ children }: Props) => {
     const auth = useContext(AuthContext);
     const router = useRouter();
-    const [classSideBar, setClassSideBar] = useState('d-none d-md-flex w-64 flex-column flex-shrink-0 p-4 bgPrimary text-white');
+    const [classSideBar, setClassSideBar] = useState('d-none d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
     const [showSideBar, setShowSideBar] = useState(false);
 
     const exibeSideBar = () => {
         if (showSideBar == false) {
             setShowSideBar(true);
-            setClassSideBar('d-flex d-md-none w-screen h-auto flex-column flex-shrink-0 p-4 bgPrimary text-white')
+            setClassSideBar('d-flex d-md-none w-screen h-auto flex-col flex-shrink-0 bgPrimary text-white')
         } else {
             setShowSideBar(false);
-            setClassSideBar('d-none d-md-flex w-64 flex-column flex-shrink-0 p-4 bgPrimary text-white');
+            setClassSideBar('d-none d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
         }
     }
     return (

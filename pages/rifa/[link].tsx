@@ -12,8 +12,8 @@ import { Rifa } from "../../types/Rifa";
 import { Controller, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from "react-toastify";
 import NumberFormat from "react-number-format";
-import { validaCpf } from '../../utils/validaCpf';
 import Link from "next/link";
+import { useValidar } from "../../hooks/useValidar";
 
 type Props = {
     rifa: Rifa[];
@@ -50,6 +50,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
     const { register, handleSubmit, control, formState: { errors } } = useForm<FormData>();
     const api = useApi();
     const route = useRouter();
+    const validar = useValidar();
 
     useEffect(() => {
         montaNumerosRifas();
@@ -244,7 +245,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                             <div className="px-2 py-6 sm:px-0">
                                 <div id="carouselRifa" className="carousel slide shadow-2xl shadow-blue-400" data-bs-ride="carousel">
                                     <div className="carousel-indicators">
-                                        {rifa[0].imagensRifas.map((imagem: any, index: any) => (
+                                        {rifa[0].imagensRifas.map((imagem, index) => (
                                             index == 1 ? (
                                                 <button key={index} type="button" data-bs-target="#carouselRifa" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1"></button>
                                             ) : (
@@ -254,14 +255,14 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                         ))}
                                     </div>
                                     <div className="carousel-inner">
-                                        {rifa[0].imagensRifas.map((imagem: any, index: any) => (
+                                        {rifa[0].imagensRifas.map((imagem, index) => (
                                             index == 0 ? (
                                                 <div key={index} className='carousel-item active'>
-                                                    <img src={imagem} className="d-block w-100" alt="..." />
+                                                    <img src={imagem.imagem} className="d-block w-100" alt="..." />
                                                 </div>
                                             ) : (
                                                 <div key={index} className='carousel-item'>
-                                                    <img src={imagem} className="d-block w-100" alt="..." />
+                                                    <img src={imagem.imagem} className="d-block w-100" alt="..." />
                                                 </div>
                                             )
                                         ))}
@@ -433,12 +434,12 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                             {
                                                                 required: "Esse campo é obrigatorio",
                                                                 pattern: {
-                                                                    value: /^[A-Za-z]+$/i,
-                                                                    message: "teste"
+                                                                    value: /[A-Z][a-z]* [A-Z][a-z]*/,
+                                                                    message: "Digite o nome completo com as primeiras letras maisculas."
                                                                 }
                                                             })}
                                                         type="text"
-                                                        className={`form-control ${errors.nomeCompleto && 'is-invalid'}`}
+                                                        className={`form-control ${errors.nomeCompleto ? 'is-invalid' : 'is-valid'}`}
                                                         name="nomeCompleto"
                                                         placeholder="Insira seu nome completo"
                                                         aria-label="nomeCompleto"
@@ -464,7 +465,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                             {...field}
                                                             format="(##) #########"
                                                             mask=""
-                                                            className={`form-control ${errors.celular && 'is-invalid'}`}
+                                                            className={`form-control ${errors.celular ? 'is-invalid' : 'is-valid'}`}
                                                             placeholder="Digite o numero do seu celular com DDD"
                                                             aria-describedby="addon-wrapping" />}
                                                     />
@@ -478,10 +479,14 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                         {...register('email',
                                                             {
                                                                 required: 'Esse campo é obrigatório',
+                                                                pattern: {
+                                                                    value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                                                    message: 'Digite um e-mail válido'
+                                                                }
                                                             }
                                                         )}
                                                         type="email"
-                                                        className={`form-control ${errors.email && 'is-invalid'}`}
+                                                        className={`form-control ${errors.email ? 'is-invalid' : 'is-valid'}`}
                                                         placeholder="insira seu e-mail"
                                                         aria-label="email"
                                                         name="email"
@@ -503,12 +508,12 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                                 message: "Digite o CPF corretamente."
                                                             },
                                                             validate: {
-                                                                validaCpf: (value) => validaCpf(value)
+                                                                validaCpf: (value) => validar.validaCpf(value)
                                                             }
                                                         }}
                                                         render={({ field }) => <NumberFormat
                                                             format="###.###.###-##"
-                                                            className={`form-control ${errors.cpf && 'is-invalid'}`}
+                                                            className={`form-control ${errors.cpf ? 'is-invalid' : 'is-valid'}`}
                                                             placeholder="insira seu cpf"
                                                             {...field}
                                                             aria-describedby="addon-wrapping" />}
@@ -547,7 +552,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
 
 
 
-                <div className={`opacity-0 pointer-events-none fixed transition-all ease-out delay-200 w-full h-full top-0 left-0 ${showModalNumeros ? 'flex' : 'hidden'}  items-center justify-center`}>
+                <div className={`fixed-top w-screen h-screen flex justify-center items-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none ${showModalNumeros ? 'flex' : 'hidden'}`}>
                     <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
                     <div className="w-auto my-1 mx-auto max-w-xl">
                         {/*content*/}
@@ -582,7 +587,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                     {...field}
                                                     format="(##) #########"
                                                     mask=""
-                                                    className={`form-control ${errors.celular && 'is-invalid'}`}
+                                                    className={`form-control ${errors.celular ? 'is-invalid' : 'is-valid'}`}
                                                     placeholder="Celular com DDD"
                                                     aria-describedby="addon-wrapping" />}
                                             />
@@ -670,7 +675,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (respostaNumerosPagos.numerosStatus) {
         numerosPagos = respostaNumerosPagos.numerosStatus;
     }
-
 
     return {
         props: {

@@ -4,7 +4,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "rifaweb-primario": "#1759ff"
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

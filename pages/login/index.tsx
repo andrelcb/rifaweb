@@ -5,6 +5,7 @@ import { AuthContext } from '../../contexts/Auth/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { GetServerSideProps } from "next";
 import { parseCookies } from 'nookies';
+import { Alerta } from '../../components/Alerta';
 
 const Login = () => {
     const auth = useContext(AuthContext);
@@ -33,33 +34,17 @@ const Login = () => {
                 Router.push('/admin');
             } else {
                 setCarregando(false);
-                toast.error("Senha ou usuario errado", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error("Senha ou usuario errado");
             }
         } else {
             setCarregando(false);
-            toast.error("Senha ou usuario errado", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast.error("Senha ou usuario errado");
         }
     }
 
     return (
         <main className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-            <ToastContainer />
+            <Alerta />
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />

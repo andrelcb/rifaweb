@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import { LayoutAdmin } from "../../../components/LayoutAdmin"
@@ -9,6 +9,8 @@ import { CategoriaRifa } from "../../../types/CategoriaRifa";
 import { quantidadeNumero } from "../../../utils/quantidadeDeNumeros";
 import Router from "next/router";
 import { parseCookies } from 'nookies'
+import { Alerta } from "../../../components/Alerta";
+import { ToggleButon } from "../../../components/ToggleButon";
 
 type Props = {
     categoriaRifa: CategoriaRifa[]
@@ -27,6 +29,7 @@ type FormValues = {
     quantidadeNumeros: string,
     numeroWhatsapp: string,
     valorNumero: string,
+    dataFinalSorteio: string
     imagemRifa: Array<File>,
     nome_premio: {
         premio: string
@@ -34,7 +37,7 @@ type FormValues = {
 }
 
 const CriarRifa = ({ categoriaRifa }: Props) => {
-    const { register, handleSubmit, control } = useForm<FormValues>({
+    const { register, handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
             nome: '',
             linkRifa: '',
@@ -44,6 +47,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
             quantidadeNumeros: '',
             numeroWhatsapp: '',
             valorNumero: '',
+            dataFinalSorteio: '',
             imagemRifa: [],
             nome_premio: [{ premio: "" }]
         }
@@ -53,9 +57,10 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         control,
         name: "nome_premio"
     });
-
-    const api = useApi()
+    const [images, setImages] = useState<Array<string>>([]);
     const [carregando, setCarregando] = useState<boolean>(false);
+    const [dataSorteio, setDataSorteio] = useState<boolean>(false);
+    const api = useApi()
 
     const cadastraRifa = async (data: FormValues) => {
         const imagens = data.imagemRifa;
@@ -68,61 +73,50 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         formData.append('quantidadeNumeros', data.quantidadeNumeros);
         formData.append('numeroWhatsapp', data.numeroWhatsapp);
         formData.append('valorNumero', data.valorNumero);
-        data.nome_premio.forEach(element => {
-            formData.append('nome_premio[]', element.premio);
-        });
-        for (let i = 0; i < imagens.length; i++) {
-            formData.append("imagemRifa[]", imagens[i])
-        }
+        formData.append('dataFinalSorteio', data.dataFinalSorteio);
+        console.log(data);
+        // data.nome_premio.forEach(element => {
+        //     formData.append('nome_premio[]', element.premio);
+        // });
+        // for (let i = 0; i < imagens.length; i++) {
+        //     formData.append("imagemRifa[]", imagens[i])
+        // }
 
-        if (data) {
-            setCarregando(true);
-            const resposta = await api.cadastrarRifa(formData);
-            if (resposta.erro === "") {
-                setCarregando(false);
-                toast.success("Rifa cadastrada com sucesso!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                Router.push(`/admin/editar-rifa/${resposta.rifa.id}`)
-            } else {
-                setCarregando(false);
-                toast.error(resposta.erro, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+        // if (data) {
+        //     setCarregando(true);
+        //     const resposta = await api.cadastrarRifa(formData);
+        //     if (resposta.erro === "") {
+        //         setCarregando(false);
+        //         toast.success("Rifa publicada com sucesso.");
+        //         Router.push(`/admin/editar-rifa/${resposta.rifa.id}`)
+        //     } else {
+        //         setCarregando(false);
+        //         toast.error(resposta.erro);
+        //     }
+        // } else {
+        //     toast.error("Preencha os campos");
+        //     setCarregando(false);
+        // }
+    }
+
+    const exibeImagem = (e: ChangeEvent<HTMLInputElement>) => {
+        const imagens = [];
+        if (e.target.files && e.target.files?.length > 0) {
+            for (let index = 0; index < e.target.files.length; index++) {
+                imagens.push(URL.createObjectURL(e.target.files[index]));
+
             }
-        } else {
-            toast.error("Preencha os campos", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            setCarregando(false);
+            setImages(imagens);
         }
     }
 
     return (
         <LayoutAdmin>
             <>
-                <ToastContainer />
+                <Alerta />
                 <div className="bg-white shadow mb-5 p-3">
                     <h1>Criar nova rifa</h1>
-                    <h5 className="fs-12px text-black-50 mb-4">Crie suas rifas sem pagar nada. Com as menores taxas do brasil.</h5>
+                    <h5 className="fs-12px text-black-50 mb-4">Crie suas rifas sem pagar nada no cadastro.</h5>
                 </div>
 
                 <div className="mt-10 sm:mt-0">
@@ -134,26 +128,32 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="tituloRifa" className="block text-sm font-medium text-gray-700">Título da rifa</label>
-
                                                 <input
-                                                    {...register('nome')}
-                                                    required
+                                                    {...register('nome', {
+                                                        validate: {
+                                                            required: (value) => { return !!value.trim() }
+                                                        }
+                                                    })}
                                                     placeholder="Exemplo: IPHONE 13 PRO MAX"
                                                     type="text"
                                                     name="nome"
                                                     id="nome"
                                                     autoComplete="given-name"
-                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md"
+                                                    className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 rounded-md ${errors.nome && 'focus:ring-red-500 focus:border-red-500'}`}
                                                 />
+                                                {errors.nome && errors.nome.type === "required" ? <p className="text-red-600">Preencha o título da rifa.</p> : null}
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="linkRifa" className="block text-sm font-medium text-gray-700">Link da rifa</label>
                                                 <div className="mt-1 flex rounded-md shadow-sm">
-                                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">http://rifaweb/rifa/</span>
+                                                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-blue-700 text-sm">https://rifaweb.app/rifa/</span>
                                                     <input
-                                                        {...register('linkRifa')}
-                                                        required
+                                                        {...register('linkRifa', {
+                                                            validate: {
+                                                                required: (value) => { return !!value.trim() }
+                                                            }
+                                                        })}
                                                         placeholder="Exemplo: iphone-13-pro-max"
                                                         type="text"
                                                         name="linkRifa"
@@ -161,13 +161,14 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                         autoComplete="family-name"
                                                         className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none sm:text-sm border-gray-300"
                                                     />
+                                                    {errors.linkRifa && errors.linkRifa.type === "required" ? <p className="text-red-600">Preencha o link da rifa.</p> : null}
                                                 </div>
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="descricao" className="block text-sm font-medium text-gray-700">Descrição</label>
                                                 <textarea
-                                                    {...register('descricao')}
+                                                    {...register('descricao', { required: "Esse campo é obrigatorio" })}
                                                     required
                                                     name="descricao"
                                                     id="descricao"
@@ -202,7 +203,28 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                     ))}
                                                 </select>
                                             </div>
-                                            <div className="col-span-6 sm:col-span-3"></div>
+                                            <div className="col-span-6 sm:col-span-3">
+                                                <ToggleButon
+                                                    titulo="Data Sorteio"
+                                                    onClick={() => setDataSorteio(!dataSorteio)}
+                                                />
+                                                {dataSorteio &&
+                                                    <input
+                                                        {...register('dataFinalSorteio', {
+                                                            validate: {
+                                                                required: (value) => { return !!value.trim() }
+                                                            }
+                                                        })}
+                                                        type="datetime-local"
+                                                        disabled={!dataSorteio}
+                                                        name="dataFinalSorteio"
+                                                        id="dataFinalSorteio"
+                                                        autoComplete="given-name"
+                                                        className={`block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-400 rounded-md ${errors.nome && 'focus:ring-red-500 focus:border-red-500'}`}
+                                                    />
+                                                }
+                                            </div>
+
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="quantidadeNumeros" className="block text-sm font-medium text-gray-700">Quantide de numeros</label>
                                                 <select
@@ -239,9 +261,9 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                 <label className="block text-sm font-medium text-gray-700"> Imagens da rifa </label>
                                                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                                     <div className="space-y-1 text-center">
-                                                        {/* <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg> */}
+                                                        <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" />
+                                                        </svg>
                                                         <div className="flex text-sm text-gray-600">
                                                             <label htmlFor="imagemRifa" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                                                 <span>Carregar imagem</span>
@@ -249,13 +271,25 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                                     {...register('imagemRifa', { required: "Esse campo é obrigatorio" })}
                                                                     required
                                                                     type="file"
-                                                                    className=""
+                                                                    id="imagemRifa"
+                                                                    className="sr-only"
+                                                                    onChange={exibeImagem}
                                                                     accept="image/*"
                                                                     multiple />
                                                             </label>
-                                                            <p className="pl-1">ou arraste e solte</p>
+                                                            <p className="pl-1"></p>
                                                         </div>
-                                                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                        {images.length > 0 ?
+                                                            <>
+                                                                <div className="flex flex-wrap space-x-2">
+                                                                    {images.map((image, index) => (
+                                                                        <img key={index} className="mt-3 h-24 w-24 shrink-0 object-cover rounded overflow-hidden" src={image} alt="fotoPerfil" />
+                                                                    ))}
+                                                                </div>
+                                                            </>
+                                                            :
+                                                            <p className="text-xs text-gray-500">PNG, JPG, GIF</p>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

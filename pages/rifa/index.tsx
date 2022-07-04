@@ -40,7 +40,11 @@ const Rifas = ({ rifa }: Props) => {
                         </div>
                         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
                             {rifa.map((rifaItem, index) => (
-                                <RifaItem key={index} nomeBotao="Participar" link={`/rifa/${rifaItem.link_rifa}`} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: rifaItem.id, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                                <RifaItem
+                                    key={index}
+                                    nomeBotao="Participar"
+                                    link={`/rifa/${rifaItem.link_rifa}`}
+                                    rifa={rifaItem} />
                             ))}
                         </div>
                     </div>

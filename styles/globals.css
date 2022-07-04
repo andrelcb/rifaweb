@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: "UniSans";
+    src: url("../public//fonts/UniSansHeavy.otf");
+  }
+}
 
 .bgPrimary {
   background: #1759ff !important;
@@ -39,6 +45,7 @@
   background: #1759ff !important;
 
 }
+
 .botao-primario:hover {
   background: #113dac !important;
   color: #fff !important;
@@ -56,7 +63,7 @@
   @apply bg-sky-500;
 }
 
-.botao-sky:hover{
+.botao-sky:hover {
   @apply bg-sky-600 text-white;
 }
 
@@ -71,3 +78,14 @@
 .numero {
   @apply text-center rounded h-8 w-14 cursor-pointer font-mono p-1 m-0.5
 }
+
+
+/* Toggle B */
+input:checked~.dot {
+  transform: translateX(100%);
+  background-color: #1759ff;
+}
+
+/* input:checked~.line {
+  background-color: #1759ff;
+} */

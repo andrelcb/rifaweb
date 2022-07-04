@@ -49,25 +49,29 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     }
 
     const logout = async () => {
-        await api.logout();
         setUsuario(null);
         removeToken();
+        await api.logout();
         Router.push('/login')
 
     }
 
     const removeToken = () => {
-        destroyCookie(undefined, 'rifaAuthToken')
+        destroyCookie(null, 'rifaAuthToken')
     }
-    
+
     const setToken = (token: string) => {
         setCookie(undefined, 'rifaAuthToken', token, {
             maxAge: 60 * 60 * 1, //1hora
         })
     }
 
+    const atualizaUsuario = (resposta: Usuario) => {
+        setUsuario(resposta);
+    }
+
     return (
-        <AuthContext.Provider value={{ usuario, login, logout, cadastro }}>
+        <AuthContext.Provider value={{ usuario, login, logout, cadastro, atualizaUsuario }}>
             {children}
         </AuthContext.Provider>
 

@@ -52,7 +52,11 @@ const Admin = ({ rifa, pedidos }: Props) => {
 
                                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-4 lg:gap-8">
                                     {rifa?.map((rifaItem, index) => (
-                                        <RifaItem key={index} nomeBotao="Editar" link={`/admin/editar-rifa/${rifaItem.id}`} dados={{ imagensRifas: rifaItem.imagensRifas[0], nome: rifaItem.nome, nome_criador: rifaItem.nome_criador, id: rifaItem.id, link_rifa: rifaItem.link_rifa, valor_numero: rifaItem.valor_numero }} />
+                                        <RifaItem
+                                            key={index}
+                                            nomeBotao="Editar"
+                                            link={`/admin/editar-rifa/${rifaItem.id}`}
+                                            rifa={rifaItem} />
                                     ))}
                                 </div>
                             </div>
@@ -92,7 +96,9 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                                     </td>
                                                                     <td className="flex flex-col text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                                         <span>{pedido.nomeCliente}</span>
-                                                                        <span><i className="text-green-600 bi bi-whatsapp"></i> {pedido.numeroCelular}</span>
+                                                                        <a className="no-underline" 
+                                                                        target={'_blank'} 
+                                                                        href={`https://api.whatsapp.com/send?phone=55${pedido.numeroCelular}&text=Ol%C3%A1%2C%20tudo%20bem ${pedido.nomeCliente}%3F%20vi%20que%20voc%C3%AA%20reservou%20um%20numero%20da%20minha%20rifa%2C%20precisa%20de%20ajuda%20para%20realizar%20o%20pagamento%3F`}><i className="text-green-600 bi bi-whatsapp inline-flex"></i> {pedido.numeroCelular}</a>
                                                                     </td>
                                                                     <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                                         {pedido.dataCadastro}
@@ -101,7 +107,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                                         {pedido.numeros}
                                                                     </td>
                                                                     <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                                                    <span className={`numero text-white ${pedido.statusPedido == 'Pago' ? 'bg-green-500' : 'bg-yellow-400'}`}>{pedido.statusPedido}</span>
+                                                                        <span className={`numero text-white ${pedido.statusPedido == 'Pago' ? 'bg-green-500' : 'bg-yellow-400'}`}>{pedido.statusPedido}</span>
                                                                     </td>
                                                                 </tr>
                                                             ))}
@@ -117,11 +123,11 @@ const Admin = ({ rifa, pedidos }: Props) => {
                     )
                     :
                     (
-                        <div className="flex mx-auto p-8 mt-8 text-white items-center">
-                            <div className="shadow-2xl bg-red-600 text-white p-6 rounded-xl flex items-center space-x-4">
+                        <div className="flex mx-auto mt-8 text-white items-center">
+                            <div className="shadow-2xl bg-red-700 text-white p-6 rounded-xl flex items-center space-x-4">
                                 <h3 className="text-2xl">Você ainda não possui nenhuma rifa.</h3>
                                 <Link href='/admin/criar-rifa'>
-                                    <button className="botao bg-emerald-900 hover:bg-emerald-700">Criar Rifa</button>
+                                    <button className="botao botao-sucesso">Criar Rifa</button>
                                 </Link>
                             </div>
                         </div>

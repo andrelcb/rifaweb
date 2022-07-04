@@ -111,7 +111,9 @@ const PedidosPagina = ({ rifa }: Props) => {
                                                         </td>
                                                         <td className="flex flex-col text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                             <span>{pedido.nomeCliente}</span>
-                                                            <span><i className="text-green-600 bi bi-whatsapp"></i> {pedido.numeroCelular}</span>
+                                                            <a className="no-underline"
+                                                                target={'_blank'}
+                                                                href={`https://api.whatsapp.com/send?phone=55${pedido.numeroCelular}&text=Ol%C3%A1%2C%20tudo%20bem ${pedido.nomeCliente}%3F%20vi%20que%20voc%C3%AA%20reservou%20um%20numero%20da%20minha%20rifa%2C%20precisa%20de%20ajuda%20para%20realizar%20o%20pagamento%3F`}><i className="text-green-600 bi bi-whatsapp inline-flex"></i> {pedido.numeroCelular}</a>
                                                         </td>
                                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                             {pedido.dataCadastro}
@@ -134,7 +136,7 @@ const PedidosPagina = ({ rifa }: Props) => {
                                             </tbody>
                                         </table>
                                         <div className="flex mt-4 justify-center">
-                                            {pedidos && pedidos.data.length > 0 &&
+                                            {pedidos && pedidos.data.length > 0 && pedidos.total > 1 &&
                                                 <Pagination
                                                     activePage={pedidos.current_page}
                                                     totalItemsCount={pedidos.total}
