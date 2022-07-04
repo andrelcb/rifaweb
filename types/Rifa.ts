@@ -1,5 +1,6 @@
 import { PremioType } from "./PremioType";
 import { PromocaoType } from "./PromocaoType";
+import { Usuario } from "./Usuario";
 
 type imagensRifa = {
     id: number,
@@ -22,4 +23,5 @@ export type Rifa = {
     data_final_sorteio?: string;
     data_limite_pagamento?: string;
     categoria_rifa_idcategoria: number
+    usuario: Usuario
 }

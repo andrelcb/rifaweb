@@ -1,7 +1,7 @@
 export type Usuario = {
+    id: number;
     cpf: string;
     data_cadastro: Date;
-    id: number;
     nome: string;
     nome_usuario: string;
     saldo: string;
