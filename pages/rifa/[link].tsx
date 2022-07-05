@@ -25,7 +25,7 @@ type Props = {
 
 interface FormData {
     nomeCompleto: string,
-    celular: string,
+    numeroCelular: string,
     email: string,
     cpf: string,
 }
@@ -159,7 +159,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
         const formData = new FormData();
         formData.append('nomeCompleto', data.nomeCompleto);
         formData.append('cpf', data.cpf);
-        formData.append('celular', data.celular);
+        formData.append('numeroCelular', data.numeroCelular);
         formData.append('email', data.email);
         console.log(numerosSelecionado);
         for (let i = 0; i < numerosSelecionado.length; i++) {
@@ -205,7 +205,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
     }
 
     const buscaNumerosRifa = async (data: FormData) => {
-        if (data.celular) {
+        if (data.numeroCelular) {
             const rifaId = rifa[0].id;
             setCarregando(true);
             const resposta = await api.buscarNumerosPedidoCelular(rifaId, data);
@@ -451,8 +451,8 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                 <div className="input-group flex-nowrap mt-2 mb-1 col-md-4">
                                                     <span className="input-group-text" id="addon-wrapping"><i className="bi bi-phone"></i></span>
                                                     <Controller
-                                                        name="celular"
-                                                        aria-label="celular"
+                                                        name="numeroCelular"
+                                                        aria-label="numeroCelular"
                                                         control={control}
                                                         rules={{
                                                             required: 'Esse campo é obrigatório',
@@ -465,12 +465,12 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                             {...field}
                                                             format="(##) #########"
                                                             mask=""
-                                                            className={`form-control ${errors.celular ? 'is-invalid' : 'is-valid'}`}
+                                                            className={`form-control ${errors.numeroCelular ? 'is-invalid' : 'is-valid'}`}
                                                             placeholder="Digite o numero do seu celular com DDD"
                                                             aria-describedby="addon-wrapping" />}
                                                     />
                                                 </div>
-                                                {errors.celular ? <p className="text-red-600">{errors.celular.message}</p> : null}
+                                                {errors.numeroCelular ? <p className="text-red-600">{errors.numeroCelular.message}</p> : null}
 
                                                 <span className="fs-14px font-semibold">Email: </span>
                                                 <div className="input-group flex-nowrap mt-2 mb-1">
@@ -573,7 +573,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                         <div className="input-group flex-nowrap mb-1 col-md-4">
                                             <span className="input-group-text" id="addon-wrapping"><i className="bi bi-ticket-perforated"></i></span>
                                             <Controller
-                                                name="celular"
+                                                name="numeroCelular"
                                                 aria-label="celular"
                                                 control={control}
                                                 rules={{
@@ -587,7 +587,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                     {...field}
                                                     format="(##) #########"
                                                     mask=""
-                                                    className={`form-control ${errors.celular ? 'is-invalid' : 'is-valid'}`}
+                                                    className={`form-control ${errors.numeroCelular ? 'is-invalid' : 'is-valid'}`}
                                                     placeholder="Celular com DDD"
                                                     aria-describedby="addon-wrapping" />}
                                             />
@@ -598,7 +598,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                                 {carregando ? <div className="px-4 animate-spin bi bi-arrow-repeat"></div> : 'Pesquisar'}
                                             </button>
                                         </div>
-                                        {errors.celular ? <p className="text-red-600">{errors.celular.message}</p> : null}
+                                        {errors.numeroCelular ? <p className="text-red-600">{errors.numeroCelular.message}</p> : null}
                                     </form>
                                 </div>
                             </div>

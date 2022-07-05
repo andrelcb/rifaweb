@@ -81,10 +81,10 @@
 
 
 /* Toggle B */
-input:checked~.dot {
+/* input:checked~.dot {
   transform: translateX(100%);
   background-color: #1759ff;
-}
+} */
 
 /* input:checked~.line {
   background-color: #1759ff;

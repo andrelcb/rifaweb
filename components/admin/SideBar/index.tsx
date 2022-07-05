@@ -41,6 +41,13 @@ export const SideBar = ({ classSideBar }: Props) => {
                             </li>
                         </Link>
                     ))}
+                    {/* //logout */}
+                    <li className={`py-1.5 p-4`}>
+                        <a className={`text-slate-50 no-underline hover:text-gray-300`}
+                            aria-current="page" onClick={() => auth.logout()}>
+                            <i className={`bi bi-box-arrow-left`}></i> Sair
+                        </a>
+                    </li>
                 </ul>
                 <hr />
                 <div className='flex flex-row space-x-4 justify-center mb-3'>

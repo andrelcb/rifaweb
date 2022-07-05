@@ -14,7 +14,8 @@ type FormValues = {
     biografia: string,
     regulamento: string,
     nomeCompleto: string,
-    enderecoDeEmail: string,
+    email: string,
+    numeroCelular: string,
     facebook: string,
     telegram: string,
     instagram: string,
@@ -30,10 +31,12 @@ const Configuracao = () => {
     const api = useApi();
 
 
-    const atualizaUsuario = async (data: object) => {
-        const formData = new FormData();
+    const atualizaUsuario = async (data: FormValues) => {
         if (data) {
-            formData
+            if (data.nomeDeUsuario == auth.usuario?.nome_usuario) {
+                data.nomeDeUsuario = '';
+            }
+            console.log(data);
             setCarregando(true);
             const resposta = await api.atualizarUsuario(data);
             if (resposta.erro === "") {
@@ -93,6 +96,7 @@ const Configuracao = () => {
                                             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"> https://rifaweb.app/ </span>
                                             <input
                                                 {...register('nomeDeUsuario', {
+                                                    required: "Esse campo é obrigatório",
                                                     pattern: {
                                                         value: /^[A-Za-z]+$/i,
                                                         message: "Digite um nome de usuário válido"
@@ -105,7 +109,7 @@ const Configuracao = () => {
                                                 defaultValue={auth.usuario?.nome_usuario}
                                                 className={` ${errors.nomeDeUsuario && 'is-invalid'} focus:ring-indigo-500 disabled:bg-gray-300 focus:border-indigo-500 w-full sm:text-sm border border-gray-300`}
                                                 placeholder="nome de usuario" />
-                                            <span onClick={() => setEditarNomeUsuario(!editarNomeUsuario)} className="inline-flex items-center  px-3 border-gray-300 bg-green-600 text-white cursor-pointer text-sm"><i className="bi bi-pencil-square"></i></span>
+                                            <span onClick={() => { setEditarNomeUsuario(!editarNomeUsuario) }} className="inline-flex items-center  px-3 border-gray-300 bg-green-600 text-white cursor-pointer text-sm"><i className="bi bi-pencil-square"></i></span>
                                         </div>
                                         {errors.nomeDeUsuario ? <p className="text-red-600">{errors.nomeDeUsuario.message}</p> : null}
                                     </div>
@@ -165,11 +169,17 @@ const Configuracao = () => {
                                         <label htmlFor="nomeCompleto" className="block text-sm font-medium text-gray-700">Nome Completo</label>
                                         <input
                                             type="text"
-                                            {...register('nomeCompleto')}
+                                            {...register('nomeCompleto', {
+                                                pattern: {
+                                                    value: /[A-Z][a-z]* [A-Z][a-z]*/,
+                                                    message: "Digite o nome completo com as primeiras letras maisculas."
+                                                }
+                                            })}
                                             defaultValue={auth.usuario?.nome}
                                             name="nomeCompleto"
                                             id="nomeCompleto"
                                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300" />
+                                        {errors.nomeCompleto ? <p className="text-red-600">{errors.nomeCompleto.message}</p> : null}
                                     </div>
                                     <div className="col-span-6 sm:col-span-3">
                                         <label htmlFor="cpf" className="block text-sm font-medium text-gray-700">CPF</label>
@@ -183,12 +193,23 @@ const Configuracao = () => {
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
-                                        <label htmlFor="enderecoDeEmail" className="block text-sm font-medium text-gray-700">Email address</label>
+                                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
                                         <input type="text"
-                                            {...register('enderecoDeEmail')}
-                                            name="enderecoDeEmail"
-                                            id="enderecoDeEmail"
+                                            {...register('email')}
+                                            name="email"
+                                            id="email"
+                                            disabled
                                             defaultValue={auth.usuario?.email}
+                                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300" />
+                                    </div>
+                                    <div className="col-span-6 sm:col-span-3">
+                                        <label htmlFor="numeroCelular" className="block text-sm font-medium text-gray-700">WhatsApp</label>
+                                        <input type="text"
+                                            {...register('numeroCelular')}
+                                            name="numeroCelular"
+                                            disabled
+                                            id="numeroCelular"
+                                            defaultValue={auth.usuario?.numero_celular}
                                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300" />
                                     </div>
                                 </div>

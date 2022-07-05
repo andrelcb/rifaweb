@@ -14,6 +14,7 @@ import { CategoriaRifa } from "../../../types/CategoriaRifa"
 import { Modal } from "../../../components/Modal"
 import { quantidadeNumero } from "../../../utils/quantidadeDeNumeros"
 import { Alerta } from "../../../components/Alerta"
+import { ToggleButon } from "../../../components/ToggleButon"
 
 type Props = {
     rifa: Rifa[]
@@ -29,6 +30,7 @@ type FormData = {
     quantidadeNumeros: string,
     numeroWhatsapp: string,
     valorNumero: string,
+    dataFinalSorteio: string,
 }
 
 type FormImagem = {
@@ -50,8 +52,16 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
     const [idImagem, setIdImagem] = useState<number>();
     const [idPremio, setIdPremio] = useState<number>();
     const [idPromocao, setIdPromocao] = useState<number>();
+    const [dataSorteio, setDataSorteio] = useState<boolean>();
     const route = useRouter();
     const api = useApi();
+
+    useEffect(() => {
+        if (rifa[0].data_final_sorteio) {
+            setDataSorteio(true);
+        }
+
+    }, [])
 
 
     const atualizarRifa = async (data: FormData) => {
@@ -252,10 +262,9 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
                                                                 <input
                                                                     {...register('linkRifa', {
                                                                         validate: {
-                                                                            required: (value) => { return !!value.trim() }
+                                                                            required: (value) => { if (!editarLink) return !!value.trim() }
                                                                         }
                                                                     })}
-                                                                    required
                                                                     placeholder="Exemplo: iphone-13-pro-max"
                                                                     type="text"
                                                                     disabled={editarLink}
@@ -265,6 +274,7 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
                                                                 />
                                                                 <span onClick={() => setEditarLink(!editarLink)} className="inline-flex items-center  px-3 border-gray-300 bg-green-600 text-white cursor-pointer text-sm"><i className="bi bi-pencil-square"></i></span>
                                                             </div>
+                                                            {errors.linkRifa && errors.linkRifa.type === "required" ? <p className="text-red-600">Preencha o link da rifa.</p> : null}
                                                         </div>
 
                                                         <div className="col-span-6 sm:col-span-3">
@@ -313,13 +323,35 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
                                                                 ))}
                                                             </select>
                                                         </div>
-                                                        <div className="col-span-6 sm:col-span-3"></div>
+                                                        <div className="col-span-6 sm:col-span-3">
+                                                            <ToggleButon
+                                                                dot={dataSorteio}
+                                                                titulo="Data Sorteio"
+                                                                onClick={() => setDataSorteio(!dataSorteio)}
+                                                            />
+                                                            {dataSorteio &&
+                                                                <input
+                                                                    {...register('dataFinalSorteio', {
+                                                                        validate: {
+                                                                            required: (value) => { if (!dataSorteio) { return !!value.trim() } }
+                                                                        }
+                                                                    })}
+                                                                    type="datetime-local"
+                                                                    disabled={!dataSorteio}
+                                                                    name="dataFinalSorteio"
+                                                                    id="dataFinalSorteio"
+                                                                    defaultValue={rifa[0].data_final_sorteio}
+                                                                    className={`block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-400 rounded-md ${errors.nome && 'focus:ring-red-500 focus:border-red-500'}`}
+                                                                />
+                                                            }
+                                                            {errors.dataFinalSorteio && errors.dataFinalSorteio.type === "required" ? <p className="text-red-600">Preencha a data do sorteio.</p> : null}
+                                                        </div>
                                                         <div className="col-span-6 sm:col-span-3">
                                                             <label htmlFor="quantidadeNumeros" className="block text-sm font-medium text-gray-700">Quantide de numeros</label>
                                                             <select
                                                                 {...register('quantidadeNumeros', {
                                                                     validate: {
-                                                                        required: (value) => { return !!value.trim() }
+                                                                        // required: (value) => { return !!value.trim() }
                                                                     }
                                                                 })}
                                                                 disabled={true}

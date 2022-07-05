@@ -4,5 +4,4 @@ export const SideBarRota = [
     { nome: 'Criar Rifa', path: ['/admin/criar-rifa', '/admin/editar-rifa/[id]'], icone: 'bi bi-ticket-perforated' },
     { nome: 'Pedidos', path: ['/admin/pedidos'], icone: 'bi bi-bag-check' },
     { nome: 'Configurações', path: ['/admin/configuracao'], icone: 'bi bi-gear' },
-    { nome: 'Sair', path: ['/sair'], icone: 'bi bi-box-arrow-left' },
 ];

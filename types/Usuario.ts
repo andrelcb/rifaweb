@@ -6,6 +6,7 @@ export type Usuario = {
     nome_usuario: string;
     saldo: string;
     email: string;
+    numero_celular: string;
     imagem_perfil: string;
     password?: string;
     biografia?: string;

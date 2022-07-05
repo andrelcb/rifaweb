@@ -74,29 +74,28 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         formData.append('numeroWhatsapp', data.numeroWhatsapp);
         formData.append('valorNumero', data.valorNumero);
         formData.append('dataFinalSorteio', data.dataFinalSorteio);
-        console.log(data);
-        // data.nome_premio.forEach(element => {
-        //     formData.append('nome_premio[]', element.premio);
-        // });
-        // for (let i = 0; i < imagens.length; i++) {
-        //     formData.append("imagemRifa[]", imagens[i])
-        // }
+        data.nome_premio.forEach(element => {
+            formData.append('nome_premio[]', element.premio);
+        });
+        for (let i = 0; i < imagens.length; i++) {
+            formData.append("imagemRifa[]", imagens[i])
+        }
 
-        // if (data) {
-        //     setCarregando(true);
-        //     const resposta = await api.cadastrarRifa(formData);
-        //     if (resposta.erro === "") {
-        //         setCarregando(false);
-        //         toast.success("Rifa publicada com sucesso.");
-        //         Router.push(`/admin/editar-rifa/${resposta.rifa.id}`)
-        //     } else {
-        //         setCarregando(false);
-        //         toast.error(resposta.erro);
-        //     }
-        // } else {
-        //     toast.error("Preencha os campos");
-        //     setCarregando(false);
-        // }
+        if (data) {
+            setCarregando(true);
+            const resposta = await api.cadastrarRifa(formData);
+            if (resposta.erro === "") {
+                setCarregando(false);
+                toast.success("Rifa publicada com sucesso.");
+                Router.push(`/admin/editar-rifa/${resposta.rifa.id}`)
+            } else {
+                setCarregando(false);
+                toast.error(resposta.erro);
+            }
+        } else {
+            toast.error("Preencha os campos");
+            setCarregando(false);
+        }
     }
 
     const exibeImagem = (e: ChangeEvent<HTMLInputElement>) => {
@@ -161,8 +160,8 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                         autoComplete="family-name"
                                                         className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none sm:text-sm border-gray-300"
                                                     />
-                                                    {errors.linkRifa && errors.linkRifa.type === "required" ? <p className="text-red-600">Preencha o link da rifa.</p> : null}
                                                 </div>
+                                                {errors.linkRifa && errors.linkRifa.type === "required" ? <p className="text-red-600">Preencha o link da rifa.</p> : null}
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
@@ -206,6 +205,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                             <div className="col-span-6 sm:col-span-3">
                                                 <ToggleButon
                                                     titulo="Data Sorteio"
+                                                    dot={dataSorteio}
                                                     onClick={() => setDataSorteio(!dataSorteio)}
                                                 />
                                                 {dataSorteio &&
@@ -223,12 +223,17 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                         className={`block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-400 rounded-md ${errors.nome && 'focus:ring-red-500 focus:border-red-500'}`}
                                                     />
                                                 }
+                                                {errors.dataFinalSorteio && errors.dataFinalSorteio.type === "required" ? <p className="text-red-600">Preencha a data do sorteio.</p> : null}
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="quantidadeNumeros" className="block text-sm font-medium text-gray-700">Quantide de numeros</label>
                                                 <select
-                                                    {...register('quantidadeNumeros', { required: "Esse campo é obrigatorio" })}
+                                                    {...register('quantidadeNumeros', {
+                                                        validate: {
+                                                            required: (value) => { return !!value.trim() }
+                                                        }
+                                                    })}
                                                     required
                                                     autoComplete="quantidadeNumeros"
                                                     className="mt-1 block w-full py-2 px-3 border border-gray-500 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -238,6 +243,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                         <option key={index} value={numero.quantidade}>{numero.texto}</option>
                                                     ))}
                                                 </select>
+                                                {errors.quantidadeNumeros && errors.quantidadeNumeros.type === "required" ? <p className="text-red-600">Seleciona a quantidade de numeros.</p> : null}
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="valorNumero" className="block text-sm font-medium text-gray-700">Valor de cada número</label>
