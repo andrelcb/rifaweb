@@ -47,7 +47,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
                 {rifa.length > 0 ?
                     (
                         <>
-                            <div className="mx-auto p-8 shadow-lg">
+                            <div className="mx-auto p-8 shadow">
                                 <h3>Minhas rifas</h3>
 
                                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-4 lg:gap-8">

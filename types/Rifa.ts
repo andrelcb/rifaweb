@@ -11,11 +11,10 @@ type imagensRifa = {
 export type Rifa = {
     id: number;
     nome: string;
-    nome_criador: string;
     link_rifa: string;
     valor_numero: string;
     quantidade_numeros?: number;
-    imagensRifas: Array<imagensRifa>;
+    imagens_rifa: Array<imagensRifa>;
     premios_rifa: Array<PremioType>
     promocao_rifa: Array<PromocaoType>
     descricao?: string;

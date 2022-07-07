@@ -395,7 +395,7 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
                                                     <div>
                                                         <button className="botao botao-sucesso" onClick={() => { setShowModal(true); console.log(showModal) }}><i className="bi bi-plus-square mr-2"></i>Adicionar Imagem</button>
                                                     </div>
-                                                    {rifas[0].imagensRifas?.map((imagem, index) => (
+                                                    {rifas[0].imagens_rifa?.map((imagem, index) => (
                                                         <div key={index} className="flex flex-row bg-gray-100 p-2">
                                                             <div className="basis-4/5">
                                                                 <img className="h-36 w-36 shrink-0 object-cover rounded overflow-hidden" src={imagem.imagem} alt="" />

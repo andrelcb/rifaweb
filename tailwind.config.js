@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       colors: {
         "rifaweb-primario": "#1759ff"
-      }
+      },
+      fontFamily: {
+        sans: ['"Exo 2"', 'sans-serif'],
+      },
     },
   },
   plugins: [

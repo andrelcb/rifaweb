@@ -36,6 +36,10 @@ export const useApi = () => ({
         const resposta = await api.get('/rifa/buscar-rifas', { params: paramentros });
         return resposta.data;
     },
+    buscaUsuarios: async (nomeusuario: string) => {
+        const resposta = await api.get(`/buscar-usuario/${nomeusuario}`);
+        return resposta.data;
+    },
     buscaRifa: async (id: any) => {
         const resposta = await api.get(`/rifa/${id}`);
         return resposta.data;

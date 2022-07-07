@@ -20,7 +20,7 @@ export const SideBar = ({ classSideBar }: Props) => {
                 <div className="flex p-4 flex-col justify-center">
                     <div className="flex">
                         <img src={auth.usuario?.imagem_perfil ? auth.usuario?.imagem_perfil : '/usuarioPadrao.png'} className="text-[#1759ff] h-12 w-12 shrink-0 object-cover rounded-full overflow-hidden me-2" />
-                        <h4 className="text-2xl mt-2 font-bold">{auth.usuario?.nome_usuario}</h4>
+                        <h4 className="text-2xl mt-2">{auth.usuario?.nome_usuario}</h4>
                     </div>
                     <div className="mt-3">
                         <span className="">SALDO DISPONÍVEL</span>

@@ -29,7 +29,7 @@ type FormValues = {
     quantidadeNumeros: string,
     numeroWhatsapp: string,
     valorNumero: string,
-    dataFinalSorteio: string
+    dataFinalSorteio: Date
     imagemRifa: Array<File>,
     nome_premio: {
         premio: string
@@ -47,7 +47,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
             quantidadeNumeros: '',
             numeroWhatsapp: '',
             valorNumero: '',
-            dataFinalSorteio: '',
+            dataFinalSorteio: new Date(),
             imagemRifa: [],
             nome_premio: [{ premio: "" }]
         }
@@ -73,7 +73,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         formData.append('quantidadeNumeros', data.quantidadeNumeros);
         formData.append('numeroWhatsapp', data.numeroWhatsapp);
         formData.append('valorNumero', data.valorNumero);
-        formData.append('dataFinalSorteio', data.dataFinalSorteio);
+        formData.append('dataFinalSorteio', data.dataFinalSorteio.toString());
         data.nome_premio.forEach(element => {
             formData.append('nome_premio[]', element.premio);
         });
@@ -211,19 +211,17 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                 {dataSorteio &&
                                                     <input
                                                         {...register('dataFinalSorteio', {
-                                                            validate: {
-                                                                required: (value) => { return !!value.trim() }
-                                                            }
+                                                            required: 'Preencha a data do sorteio.'
                                                         })}
                                                         type="datetime-local"
-                                                        disabled={!dataSorteio}
+                                                        disabled={!dataSorteio}                                                        
                                                         name="dataFinalSorteio"
                                                         id="dataFinalSorteio"
                                                         autoComplete="given-name"
                                                         className={`block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-400 rounded-md ${errors.nome && 'focus:ring-red-500 focus:border-red-500'}`}
                                                     />
                                                 }
-                                                {errors.dataFinalSorteio && errors.dataFinalSorteio.type === "required" ? <p className="text-red-600">Preencha a data do sorteio.</p> : null}
+                                                {errors.dataFinalSorteio ? <p className="text-red-600">Preencha a data do sorteio.</p> : null}
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">

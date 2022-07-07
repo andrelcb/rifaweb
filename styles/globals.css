@@ -2,17 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  @font-face {
-    font-family: "UniSans";
-    src: url("../public//fonts/UniSansHeavy.otf");
-  }
-}
-
-.bgPrimary {
-  background: #1759ff !important;
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
@@ -33,6 +22,18 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+@font-face {
+  font-family: "Exo2";
+  src: url("/fonts/Exo2-SemiBold.ttf");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+.bgPrimary {
+  background: #1759ff !important;
 }
 
 .botao {
@@ -80,12 +81,8 @@
 }
 
 
-/* Toggle B */
-/* input:checked~.dot {
-  transform: translateX(100%);
-  background-color: #1759ff;
-} */
 
-/* input:checked~.line {
-  background-color: #1759ff;
-} */
+/* formularios tailwind */
+.select-form {
+  @apply mt-1 block w-full py-2 px-3 border border-gray-400 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+}

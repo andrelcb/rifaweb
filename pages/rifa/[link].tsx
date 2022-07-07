@@ -245,7 +245,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                             <div className="px-2 py-6 sm:px-0">
                                 <div id="carouselRifa" className="carousel slide shadow-2xl shadow-blue-400" data-bs-ride="carousel">
                                     <div className="carousel-indicators">
-                                        {rifa[0].imagensRifas.map((imagem, index) => (
+                                        {rifa[0].imagens_rifa.map((imagem, index) => (
                                             index == 1 ? (
                                                 <button key={index} type="button" data-bs-target="#carouselRifa" data-bs-slide-to={index} className="active" aria-current="true" aria-label="Slide 1"></button>
                                             ) : (
@@ -255,7 +255,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                         ))}
                                     </div>
                                     <div className="carousel-inner">
-                                        {rifa[0].imagensRifas.map((imagem, index) => (
+                                        {rifa[0].imagens_rifa.map((imagem, index) => (
                                             index == 0 ? (
                                                 <div key={index} className='carousel-item active'>
                                                     <img src={imagem.imagem} className="d-block w-100" alt="..." />
@@ -293,7 +293,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                                             <div className="text-white rounded-md text-uppercase font-weight-bold bg-red-600 w-64 p-2 br- text-center">
                                                 <b>Data sorteio</b>
                                             </div>
-                                            <h3 className="text-center pt-3">{rifa[0].data_final_sorteio}</h3>
+                                            <h3 className="pt-3">{rifa[0].data_final_sorteio}</h3>
                                         </div>
                                     }
                                     <div className="mt-3">

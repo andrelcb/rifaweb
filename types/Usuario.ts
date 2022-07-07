@@ -1,9 +1,11 @@
+import { Rifa } from "./Rifa";
+
 export type Usuario = {
     id: number;
     cpf: string;
     data_cadastro: Date;
     nome: string;
-    nome_usuario: string;
+    nome_usuario?: string;
     saldo: string;
     email: string;
     numero_celular: string;
@@ -14,4 +16,5 @@ export type Usuario = {
     facebook?: string;
     twitter?: string;
     telegram?: string;
+    rifas?: Rifa[];
 }

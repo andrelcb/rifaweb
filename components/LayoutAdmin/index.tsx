@@ -11,21 +11,21 @@ type Props = {
 export const LayoutAdmin = ({ children }: Props) => {
     const auth = useContext(AuthContext);
     const router = useRouter();
-    const [classSideBar, setClassSideBar] = useState('d-none d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
+    const [classSideBar, setClassSideBar] = useState('hidden md:flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
     const [showSideBar, setShowSideBar] = useState(false);
 
     const exibeSideBar = () => {
         if (showSideBar == false) {
             setShowSideBar(true);
-            setClassSideBar('d-flex d-md-none w-screen h-auto flex-col flex-shrink-0 bgPrimary text-white')
+            setClassSideBar('flex md:hidden w-screen h-auto flex-col flex-shrink-0 bgPrimary text-white')
         } else {
             setShowSideBar(false);
-            setClassSideBar('d-none d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
+            setClassSideBar('hidden d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
         }
     }
     return (
         <>
-            <div className=' text-white block md:hidden bgPrimary border-0 p-2'>
+            <div className=' text-white flex md:hidden bgPrimary border-0 p-2'>
                 <button onClick={exibeSideBar} className="fs-2" type="button">
                     <i className="bi bi-text-paragraph"></i>
                 </button>
