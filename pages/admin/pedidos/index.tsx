@@ -24,7 +24,6 @@ const PedidosPagina = ({ rifa }: Props) => {
 
     useEffect(() => {
         buscaPedidos()
-
     }, [statusFiltro, rifaFiltro])
 
     const buscaPedidos = async (page: number = 1) => {

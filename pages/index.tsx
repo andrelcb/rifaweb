@@ -6,12 +6,12 @@ import HomeFoto from '../public/home.jpg'
 import Link from 'next/link'
 import { RifaItem } from '../components/RifaItem'
 import { useApi } from '../hooks/useApi'
-import { Rifa } from '../types/Rifa'
 import { useContext } from 'react'
 import { AuthContext } from '../contexts/Auth/AuthContext'
+import { Rifas } from '../types/RifaPaginate'
 
 type Props = {
-  rifa: Rifa[];
+  rifa: Rifas;
 }
 
 const Home = ({ rifa }: Props) => {
@@ -48,7 +48,7 @@ const Home = ({ rifa }: Props) => {
             </div>
 
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
-              {rifa.map((rifaItem, index) => (
+              {rifa.data.map((rifaItem, index) => (
                 <RifaItem key={index}
                   nomeBotao="Participar"
                   link={`/rifa/${rifaItem.link_rifa}`}
@@ -76,7 +76,7 @@ export const getServerSideProps = async () => {
   const api = useApi();
   const paramentros = { limit: 6 };
   const resposta = await api.buscaRifas(paramentros);
-  const rifas: Rifa[] = resposta.rifas;
+  const rifas: Rifas = resposta.rifas;
 
   return {
     props: {

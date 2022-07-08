@@ -14,6 +14,8 @@ import { ToastContainer, toast } from "react-toastify";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import { useValidar } from "../../hooks/useValidar";
+import { Rifas } from "../../types/RifaPaginate";
+import { Alerta } from "../../components/Alerta";
 
 type Props = {
     rifa: Rifa[];
@@ -216,15 +218,7 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
             } else {
                 setPedidos([]);
                 setCarregando(false);
-                toast.error(resposta.erro, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(resposta.erro);
             }
         }
     }
@@ -232,11 +226,22 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
     return (
         <Layout>
             <>
-                <ToastContainer />
-                <div className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold text-gray-900">{rifa[0].nome}</h1>
+                <Alerta />
+                <div className="flex flex-row bg-white justify-center shadow">
+                    <div className="flex flex-col md:flex-row max-w-7xl justify-start py-6 px-4 sm:px-6 lg:px-8 md:space-x-20">
+                        <h1 className="text-2xl font-bold text-gray-900">{rifa[0].nome}</h1>
+                        <div className="flex-col md:flex-row text-2xl space-x-3 text-rifaweb-primario mt-10 md:mt-0">
+                            <Link href={`/${rifa[0].usuario.nome_usuario}`}>
+                                <span className="cursor-pointer hover:text-rifaweb-primario text-black-50"><i className="bi bi-person-circle"></i> {rifa[0].usuario.nome_usuario}</span>
+                            </Link>
+                            {rifa[0].usuario.facebook && <a target={'_blank'} href={rifa[0].usuario.facebook}><i className="bi bi-facebook"></i></a>}
+                            {rifa[0].usuario.instagram && <a target={'_blank'} href={rifa[0].usuario.instagram}><i className="bi bi-instagram"></i></a>}
+                            {rifa[0].usuario.numero_celular && <a target={'_blank'} href={`https://api.whatsapp.com/send?phone=55${rifa[0].usuario.numero_celular}&text=Ol%C3%A1%2C%20tudo%20bem?`}><i className="bi bi-whatsapp"></i></a>}
+                            {rifa[0].usuario.twitter && <a target={'_blank'} href={rifa[0].usuario.twitter}><i className="bi bi-twitter"></i></a>}
+                            {rifa[0].usuario.telegram && <a target={'_blank'} href={rifa[0].usuario.telegram}><i className="bi bi-telegram"></i></a>}
+                        </div>
                     </div>
+
                 </div>
 
                 <div className="container">
@@ -640,9 +645,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //busca rifas
     const paramentros = { link_rifa: link };
     const resposta = await api.buscaRifas(paramentros);
-    const rifas: Rifa[] = resposta.rifas;
+    const rifas: Rifas = resposta.rifas;
 
-    if (rifas.length === 0) {
+    if (!rifas) {
         return {
             redirect: {
                 destination: '/rifa',
@@ -652,17 +657,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     //busca premio
-    const respostaPremio = await api.buscaPremioRifa(rifas[0].id);
+    const respostaPremio = await api.buscaPremioRifa(rifas.data[0].id);
     const premioRifa: PremioType[] = respostaPremio.premioRifa;
 
 
     //busca promocao
-    const respostaPromocao = await api.buscaPromocaoRifa(rifas[0].id);
+    const respostaPromocao = await api.buscaPromocaoRifa(rifas.data[0].id);
     const promocaoRifa: PromocaoType[] = respostaPromocao.promocaoRifa;
 
     //busca numeros reservados
     const status = { status: 'Reservado' };
-    const respostaNumeroReservado = await api.buscaNumerosReservados(rifas[0].id, status);
+    const respostaNumeroReservado = await api.buscaNumerosReservados(rifas.data[0].id, status);
     let numerosReservados: Array<string> = [];
     if (respostaNumeroReservado.numerosStatus) {
         numerosReservados = respostaNumeroReservado.numerosStatus;
@@ -670,7 +675,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     //busca numeros reservados
     const statusPago = { status: 'Pago' };
-    const respostaNumerosPagos = await api.buscaNumerosReservados(rifas[0].id, statusPago);
+    const respostaNumerosPagos = await api.buscaNumerosReservados(rifas.data[0].id, statusPago);
     let numerosPagos: Array<string> = [];
     if (respostaNumerosPagos.numerosStatus) {
         numerosPagos = respostaNumerosPagos.numerosStatus;
@@ -678,7 +683,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
         props: {
-            rifa: rifas,
+            rifa: rifas.data,
             premioRifa: premioRifa,
             promocaoRifa: promocaoRifa,
             numerosReservados: numerosReservados,

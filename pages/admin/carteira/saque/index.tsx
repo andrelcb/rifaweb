@@ -1,9 +1,11 @@
 import { ChangeEvent, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import { toast } from "react-toastify";
 import { Alerta } from "../../../../components/Alerta"
 import { LayoutAdmin } from "../../../../components/LayoutAdmin";
 import { AuthContext } from "../../../../contexts/Auth/AuthContext";
+import { useApi } from "../../../../hooks/useApi";
 import currencyFormatter from "../../../../utils/formatacaoBrl";
 
 
@@ -17,6 +19,7 @@ const Saque = () => {
     const auth = useContext(AuthContext);
     const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<formData>();
     const [chavePix, setChavePix] = useState<string>('CPF');
+    const api = useApi();
 
     const changeChavePix = (e: ChangeEvent<HTMLSelectElement>) => {
         const chave = e.target.value;
@@ -38,8 +41,15 @@ const Saque = () => {
         }
     }
 
-    const sacar = (data: formData) => {
-        console.log(data)
+    const sacar = async (data: formData) => {
+        if (data) {
+            const resposta = await api.sacar(data);
+            if (resposta.erro === 0) {
+                toast.success('Saque realizado com sucesso.');
+            } else {
+                toast.error(resposta.erro);
+            }
+        }
 
     }
     return (

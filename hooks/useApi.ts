@@ -119,4 +119,8 @@ export const useApi = () => ({
         const resposta = await api.get(`/gera-qrcode-pix/${id}`);
         return resposta.data;
     },
+    sacar: async (data: object) => {
+        const resposta = await api.post(`/sacar`, data);
+        return resposta.data;
+    }
 })
