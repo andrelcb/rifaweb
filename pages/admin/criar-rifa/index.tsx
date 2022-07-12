@@ -29,7 +29,7 @@ type FormValues = {
     quantidadeNumeros: string,
     numeroWhatsapp: string,
     valorNumero: string,
-    dataFinalSorteio: Date
+    dataFinalSorteio: string
     imagemRifa: Array<File>,
     nome_premio: {
         premio: string
@@ -37,7 +37,7 @@ type FormValues = {
 }
 
 const CriarRifa = ({ categoriaRifa }: Props) => {
-    const { register, handleSubmit, control, formState: { errors } } = useForm<FormValues>({
+    const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
             nome: '',
             linkRifa: '',
@@ -47,7 +47,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
             quantidadeNumeros: '',
             numeroWhatsapp: '',
             valorNumero: '',
-            dataFinalSorteio: new Date(),
+            dataFinalSorteio: "",
             imagemRifa: [],
             nome_premio: [{ premio: "" }]
         }
@@ -73,7 +73,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
         formData.append('quantidadeNumeros', data.quantidadeNumeros);
         formData.append('numeroWhatsapp', data.numeroWhatsapp);
         formData.append('valorNumero', data.valorNumero);
-        formData.append('dataFinalSorteio', data.dataFinalSorteio.toString());
+        formData.append('dataFinalSorteio', data.dataFinalSorteio);
         data.nome_premio.forEach(element => {
             formData.append('nome_premio[]', element.premio);
         });
@@ -206,7 +206,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                 <ToggleButon
                                                     titulo="Data Sorteio"
                                                     dot={dataSorteio}
-                                                    onClick={() => setDataSorteio(!dataSorteio)}
+                                                    onClick={() => { setDataSorteio(!dataSorteio); !dataSorteio && setValue('dataFinalSorteio', '') }}
                                                 />
                                                 {dataSorteio &&
                                                     <input
@@ -214,7 +214,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                                             required: 'Preencha a data do sorteio.'
                                                         })}
                                                         type="datetime-local"
-                                                        disabled={!dataSorteio}                                                        
+                                                        disabled={!dataSorteio}
                                                         name="dataFinalSorteio"
                                                         id="dataFinalSorteio"
                                                         autoComplete="given-name"

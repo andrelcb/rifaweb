@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 import { ChangeEvent, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
@@ -197,3 +199,20 @@ const Saque = () => {
 }
 
 export default Saque;
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { 'rifaAuthToken': token } = parseCookies(context);
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}

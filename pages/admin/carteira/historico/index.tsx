@@ -1,9 +1,11 @@
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 import { Alerta } from "../../../../components/Alerta"
 import { LayoutAdmin } from "../../../../components/LayoutAdmin";
 
 
 
-export const Historico = () => {
+const Historico = () => {
     return (
         <LayoutAdmin>
             <>
@@ -15,4 +17,23 @@ export const Historico = () => {
             </>
         </LayoutAdmin>
     )
+}
+
+
+export default Historico;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { 'rifaAuthToken': token } = parseCookies(context);
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }

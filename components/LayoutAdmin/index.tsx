@@ -10,34 +10,20 @@ type Props = {
 }
 export const LayoutAdmin = ({ children }: Props) => {
     const auth = useContext(AuthContext);
+    const [exibeSideBar, setExibeSideBar] = useState<boolean>(false);
     const router = useRouter();
-    const [classSideBar, setClassSideBar] = useState('hidden md:flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
-    const [showSideBar, setShowSideBar] = useState(false);
 
-    const exibeSideBar = () => {
-        if (showSideBar == false) {
-            setShowSideBar(true);
-            setClassSideBar('flex md:hidden w-screen h-auto flex-col flex-shrink-0 bgPrimary text-white')
-        } else {
-            setShowSideBar(false);
-            setClassSideBar('hidden d-md-flex w-64 flex-col flex-shrink-0 bgPrimary text-white');
-        }
-    }
     return (
         <>
-            <div className=' text-white flex md:hidden bgPrimary border-0 p-2'>
-                <button onClick={exibeSideBar} className="fs-2" type="button">
-                    <i className="bi bi-text-paragraph"></i>
-                </button>
-            </div>
-            <main className={`d-flex flex-nowrap`}>
-                <SideBar classSideBar={classSideBar} />
-                <div className="overflow-y-scroll max-h-screen h-screen max-w-screen w-screen">
-                    <div className="container-fluid py-2 md:py-5">
-                        {children}
-                    </div>
+            <button onClick={() => setExibeSideBar(!exibeSideBar)} className="text-2xl flex md:hidden px-4 py-1 bg-rifaweb-primario text-white w-full" type="button">
+                <i className={`bi ${exibeSideBar ? 'bi-list-check' : 'bi-list'}`}></i>
+            </button>
+            <div className="flex">
+                <SideBar exibeSideBar={exibeSideBar} />
+                <div className="md:p-2 flex-1 h-screen overflow-y-scroll">
+                    {children}
                 </div>
-            </main>
+            </div>
         </>
     );
 

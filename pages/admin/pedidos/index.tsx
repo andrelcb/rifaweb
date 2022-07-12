@@ -126,9 +126,9 @@ const PedidosPagina = ({ rifa }: Props) => {
                                                     </tr>
                                                 ))}
                                                 {pedidos?.data.length === 0 &&
-                                                    <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300">
+                                                    <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-300 flex">
                                                         <td className="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-red-500">
-                                                            Não foi encotrado pedidos. Tente outro filtro.
+                                                            Não foi encotrado pedidos.
                                                         </td>
                                                     </tr>
                                                 }

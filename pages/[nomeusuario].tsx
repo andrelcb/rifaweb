@@ -14,6 +14,7 @@ type Props = {
 
 const Usuario = ({ usuario }: Props) => {
     const [openTab, setOpenTab] = useState(1);
+    
     return (
         <Layout>
             <div className="container">
@@ -58,6 +59,20 @@ const Usuario = ({ usuario }: Props) => {
                                 </div>
                             </div>
                             <div className={openTab === 2 ? "block" : "hidden"} id="sobre">
+                                <div className="tab-content tab-space">
+                                    <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
+                                        {usuario.rifas?.map((rifa, index) => (
+                                            <RifaItem
+                                                key={index}
+                                                rifa={rifa}
+                                                nomeBotao={'Participar'}
+                                                link={`/rifa/${rifa.link_rifa}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={openTab === 3 ? "block" : "hidden"} id="sobre">
                                 <h3 className="">Sobre: {usuario.nome}</h3>
                                 <p className="text-justify">{usuario.biografia}</p>
                             </div>

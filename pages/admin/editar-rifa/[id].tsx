@@ -38,7 +38,7 @@ type FormImagem = {
 }
 
 const editarRifa = ({ rifa, categoriaRifa }: Props) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
     const { register: registerImagem, handleSubmit: handleSubmitImagem, formState: { errors: errorsImagem } } = useForm<FormImagem>()
     const { register: registerPremio, handleSubmit: handleSubmitPremio, formState: { errors: errorsPremio } } = useForm()
     const { register: registerPromocao, handleSubmit: handleSubmitPromocao, formState: { errors: errorsPromocao } } = useForm()
@@ -165,7 +165,7 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
     const deletarPremio = async () => {
         if (idPremio) {
             setCarregando(true);
-            const resposta = await api.deletarPremio(idPremio);
+            const resposta = await api.deletarPremio(rifa[0].id, idPremio);
             if (resposta.erro === "") {
                 const respostaRifa = await api.buscaRifa(rifa[0].id)
                 setRifas(respostaRifa.rifas);
@@ -327,7 +327,7 @@ const editarRifa = ({ rifa, categoriaRifa }: Props) => {
                                                             <ToggleButon
                                                                 dot={dataSorteio}
                                                                 titulo="Data Sorteio"
-                                                                onClick={() => setDataSorteio(!dataSorteio)}
+                                                                onClick={() => { setDataSorteio(!dataSorteio); dataSorteio && setValue('dataFinalSorteio', '') }}
                                                             />
                                                             {dataSorteio &&
                                                                 <input

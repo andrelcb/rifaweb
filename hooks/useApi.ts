@@ -99,8 +99,8 @@ export const useApi = () => ({
         const resposta = await api.delete(`/rifa/${id}/deletar-imagem`);
         return resposta.data
     },
-    deletarPremio: async (id: number) => {
-        const resposta = await api.delete(`/rifa/${id}/deletar-premio`);
+    deletarPremio: async (idRifa:number, idPremio: number) => {
+        const resposta = await api.delete(`/rifa/${idRifa}/deletar-premio/${idPremio}`);
         return resposta.data
     },
     deletarPromocao: async (id: number) => {

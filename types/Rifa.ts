@@ -21,6 +21,7 @@ export type Rifa = {
     regulamento?: string;
     data_final_sorteio?: string;
     data_limite_pagamento?: string;
-    categoria_rifa_idcategoria: number
+    categoria_rifa_idcategoria: number;
+    status: string;
     usuario: Usuario
 }

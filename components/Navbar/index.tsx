@@ -43,7 +43,7 @@ export const Navbar = () => {
                                         </>
                                     ) : (
                                         <Link href={'/admin'}>
-                                            <a className="botao bg-white text-black">{auth.usuario.nome}</a>
+                                            <a className="botao bg-white text-black"><i className='bi bi-gear mr-2'></i>{auth.usuario.nome_usuario}</a>
                                         </Link>
                                     )}
                                 </div>

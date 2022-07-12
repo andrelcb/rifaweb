@@ -1,13 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LayoutAdmin } from "../../components/LayoutAdmin";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { GetServerSideProps } from "next";
 import { parseCookies } from 'nookies'
 import { getAPIClient } from "../../hooks/axios";
 import { Rifa } from "../../types/Rifa";
-import { RifaItem } from "../../components/RifaItem";
 import { Pedidos } from "../../types/Pedidos";
 import Link from "next/link";
+import { RifaCard } from "../../components/admin/RifaCard";
 
 
 type Props = {
@@ -16,6 +16,32 @@ type Props = {
 }
 const Admin = ({ rifa, pedidos }: Props) => {
     const auth = useContext(AuthContext);
+    const [rifaFinalizada, setRifaFinalizada] = useState<Array<string>>([]);
+    const [rifaAtivo, setRifaAtivo] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        rifaStatus();
+    }, [])
+
+    const rifaStatus = () => {
+        let rifaAtivoTemp = [...rifaAtivo];
+        rifa.forEach((rifa) => {
+            if (rifa.status == 'Ativo') {
+                rifaAtivoTemp.push(rifa.status);
+            }
+
+            setRifaAtivo(rifaAtivoTemp);
+        })
+
+        let rifasFinalizadasTemp = [...rifaFinalizada];
+        rifa.forEach((rifa) => {
+            if (rifa.status == 'Finalizado') {
+                rifasFinalizadasTemp.push(rifa.status);
+            }
+
+            setRifaFinalizada(rifasFinalizadasTemp);
+        })
+    }
 
     return (
         <LayoutAdmin>
@@ -30,18 +56,13 @@ const Admin = ({ rifa, pedidos }: Props) => {
                 <div className="mx-auto p-2 lg:p-8 grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8 text-white">
                     <div className="p-6 text-center bgPrimary rounded-xl shadow-lg flex items-center space-x-4">
                         <h3><i className="bi bi-ticket-perforated"></i></h3>
-                        <h3>Quantidade de rifas</h3>
-                        <h3>{rifa?.length}</h3>
+                        <h3>Rifas Ativas</h3>
+                        <h3>{rifaAtivo.length}</h3>
                     </div>
-                    <div className="p-6 text-center bg-blue-800 rounded-xl shadow-lg flex items-center space-x-4">
-                        <h3><i className="bi bi-bag"></i></h3>
-                        <h3>Pedidos Totais</h3>
-                        <h3>0</h3>
-                    </div>
-                    <div className="p-6 text-center bg-yellow-500 rounded-xl shadow-lg flex items-center space-x-4">
-                        <h3><i className="bi bi-bag"></i></h3>
-                        <h3>Pedidos reservados</h3>
-                        <h3>0</h3>
+                    <div className="p-6 text-center bg-red-600 rounded-xl shadow-lg flex items-center space-x-4">
+                        <h3><i className="bi bi-ticket-perforated"></i></h3>
+                        <h3>Rifas Finalizadas</h3>
+                        <h3>{rifaFinalizada.length}</h3>
                     </div>
                 </div>
                 {rifa.length > 0 ?
@@ -52,7 +73,7 @@ const Admin = ({ rifa, pedidos }: Props) => {
 
                                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-4 lg:gap-8">
                                     {rifa?.map((rifaItem, index) => (
-                                        <RifaItem
+                                        <RifaCard
                                             key={index}
                                             nomeBotao="Editar"
                                             link={`/admin/editar-rifa/${rifaItem.id}`}
@@ -96,9 +117,9 @@ const Admin = ({ rifa, pedidos }: Props) => {
                                                                     </td>
                                                                     <td className="flex flex-col text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                                         <span>{pedido.nomeCliente}</span>
-                                                                        <a className="no-underline" 
-                                                                        target={'_blank'} 
-                                                                        href={`https://api.whatsapp.com/send?phone=55${pedido.numeroCelular}&text=Ol%C3%A1%2C%20tudo%20bem ${pedido.nomeCliente}%3F%20vi%20que%20voc%C3%AA%20reservou%20um%20numero%20da%20minha%20rifa%2C%20precisa%20de%20ajuda%20para%20realizar%20o%20pagamento%3F`}><i className="text-green-600 bi bi-whatsapp inline-flex"></i> {pedido.numeroCelular}</a>
+                                                                        <a className="no-underline"
+                                                                            target={'_blank'}
+                                                                            href={`https://api.whatsapp.com/send?phone=55${pedido.numeroCelular}&text=Ol%C3%A1%2C%20tudo%20bem ${pedido.nomeCliente}%3F%20vi%20que%20voc%C3%AA%20reservou%20um%20numero%20da%20minha%20rifa%2C%20precisa%20de%20ajuda%20para%20realizar%20o%20pagamento%3F`}><i className="text-green-600 bi bi-whatsapp inline-flex"></i> {pedido.numeroCelular}</a>
                                                                     </td>
                                                                     <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                                         {pedido.dataCadastro}
