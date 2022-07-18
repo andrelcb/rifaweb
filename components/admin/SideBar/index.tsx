@@ -34,8 +34,8 @@ export const SideBar = ({ exibeSideBar }: Props) => {
 
                 <ul className={`nav flex-col mb-auto text-lg mt-2 cursor-pointer`}>
                     {SideBarRota.map((menu, index) => (
-                        <>
-                            <Link key={index} href={menu.path[0]}>
+                        <div key={index}>
+                            <Link href={menu.path[0]}>
                                 <li className={`flex py-3 mt-1 p-4 ${subMenuOpen && menu.submenu && 'bg-[#113dac]'} ${menu.path?.includes(router.pathname) ? 'bg-[#113dac]' : null}`} onClick={() => menu.submenu && setSubmenuOpen(!subMenuOpen)}>
                                     <a className={`text-slate-50 no-underline hover:text-gray-300 flex-1`}>
                                         <i className={`${menu.icone}`}></i> {menu.nome}
@@ -59,7 +59,7 @@ export const SideBar = ({ exibeSideBar }: Props) => {
                                     ))}
                                 </ul>
                             }
-                        </>
+                        </div>
 
 
                     ))}

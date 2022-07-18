@@ -53,10 +53,21 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
     const api = useApi();
     const route = useRouter();
     const validar = useValidar();
+    const [pageYPosition, setPageYPosition] = useState(0);
 
     useEffect(() => {
         montaNumerosRifas();
+        if (typeof window !== "undefined") {
+            window.addEventListener('scroll', getPageYAfterScroll);
+        }
     }, [])
+
+    const getPageYAfterScroll = () => {
+        setPageYPosition(window.scrollY);
+    }
+    const scrollTop = () => {
+        window.scrollTo(0, 0);
+    }
 
     const handleNumeros = async (index: number, numero: string) => {
         let numeroItemTemp = [...numerosItem];
@@ -121,10 +132,8 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
                     numeros = addZeroes(index, 2);
                 } else if (quantidadeNumeros <= 1000) {
                     numeros = addZeroes(index, 3);
-                } else if (quantidadeNumeros <= 5000) {
-                    numeros = addZeroes(index, 4);
                 } else {
-                    numeros = addZeroes(index, 5);
+                    numeros = addZeroes(index, 4);
                 }
 
 
@@ -227,16 +236,21 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
         <Layout>
             <>
                 <Alerta />
-                <div className="flex flex-row bg-white justify-center shadow">
+                {pageYPosition > 900 &&
+                    <a onClick={() => scrollTop()} className="cursor-pointer fixed botao botao-primario bottom-20 right-0 ">
+                        <i className="bi bi-chevron-up"></i>
+                    </a>
+                }
+                <div id="inico" className="flex flex-row bg-white justify-center shadow">
                     <div className="flex flex-col md:flex-row max-w-7xl justify-start py-6 px-4 sm:px-6 lg:px-8 md:space-x-20">
-                        {rifa[0].status === 'Finalizado' &&
-                            <div className="flex flex-col text-center mb-10 md:mb-0 text-white">
-                                <span className="text-center rounded-md text-uppercase bg-green-500 w-52">Rifa Finalizada</span>
-                            </div>
-                        }
                         <h1 className="text-2xl font-bold text-gray-900">
                             {rifa[0].nome}
                         </h1>
+                        {rifa[0].status === 'Finalizado' &&
+                            <div className="flex flex-col text-center mt-10 md:mt-0 text-white">
+                                <span className="text-center rounded-md text-uppercase bg-green-500 w-52">Rifa Finalizada</span>
+                            </div>
+                        }
                         {rifa[0].data_final_sorteio &&
                             <div className="flex flex-col mt-10 md:mt-0 text-white rounded-md text-uppercase bg-green-600 w-52 p-1 text-center">
                                 <span className="">Data do sorteio</span>
@@ -259,20 +273,18 @@ const RifaCompra = ({ rifa, premioRifa, promocaoRifa, numerosReservados, numeros
 
                 <div className="container">
                     {rifa[0].status === 'Finalizado' &&
-                        <div className="flex flex-col mt-3 shadow-sm">
-                            <div className="flex justify-center font-bold flex-col md:flex-row md:space-x-56 bg-green-500 p-4 w-full text-white">
-                                <span>#</span>
+                        <div className="flex flex-col my-9 shadow-sm">
+                            <h1 className="text-xl md:text-3xl text-center uppercase">Numeros vencedores! 🥳 🎉 🎊</h1>
+                            <h3 className="text-center uppercase text-base md:text-lg text-gray-400">Data que foi realizado o sorteio: {rifa[0]?.data_final_sorteio}</h3>
+
+                            <div className="flex justify-center font-bold flex-row md:space-x-56 bg-green-500 p-4 w-full text-white">
+                                <span className="flex-1">Vencedor(a)</span>
                                 <span>Numero Vencedor</span>
-                                <span>Nome do(a) Ganhador(a)</span>
-                                <span>Numero Celular</span>
                             </div>
                             {premioRifa.map((premio, index) => (
-                                <div key={index} className="flex justify-center flex-col md:flex-row md:space-x-56 shadow-sm p-4 w-full">
-                                    <span>{premio.ordem}</span>
-                                    <span>{premio.nome_premio}</span>
-                                    <span>{premio.nome_premio}</span>
-                                    <span>{premio.nome_premio}</span>
-                                    <span>{premio.nome_premio}</span>
+                                <div key={index} className="flex justify-center flex-row md:space-x-56 shadow-sm p-4 w-full">
+                                    <span className="flex-1 font-semibold">{premio.ordem}º Ganhador(a) - {premio.pedido?.nome}</span>
+                                    <span className="pago numero bg-green-500 text-white">{premio.numero?.numero}</span>
                                 </div>
                             ))}
                         </div>

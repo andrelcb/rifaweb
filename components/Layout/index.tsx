@@ -9,7 +9,7 @@ type Props = {
 
 export const Layout = ({ children }: Props) => {
     return (
-        <div className="flex flex-col h-screen justify-between">
+        <div className="flex flex-col justify-between">
             <Navbar />
             <main className="mb-auto">
                 {children}

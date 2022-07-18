@@ -7,9 +7,10 @@ type Props = {
     rifa: Rifa,
     nomeBotao: string,
     link: string,
+    buscaPremiosRifa(): Promise<void>;
 }
 
-export const RifaCard = ({ rifa, nomeBotao, link }: Props) => {
+export const RifaCard = ({ rifa, nomeBotao, link, buscaPremiosRifa }: Props) => {
     return (
 
         <div className={`card mt-4 relative flex flex-col  rounded-md shadow-md `}>
@@ -28,7 +29,7 @@ export const RifaCard = ({ rifa, nomeBotao, link }: Props) => {
                                 <button type="button" className="botao botao-primario px-2"><i className="bi bi-ticket-perforated iconRifa"></i> {nomeBotao}</button>
                             </Link>
                             <a target={'_blank'} href={`/rifa/${rifa.link_rifa}`} className="botao bg-green-600 px-2"><i className="bi bi-eye mr-2"></i>Visualizar</a>
-                            <button className="botao bg-red-600 px-2">Finalizar Rifa</button>
+                            <button onClick={buscaPremiosRifa} className="botao bg-red-600 px-2">Finalizar Rifa</button>
                         </>
                         :
                         <>

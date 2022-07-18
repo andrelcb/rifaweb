@@ -30,7 +30,7 @@ export const Navbar = () => {
                                         <Link href={'/'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Inicio</a></Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href={'/termo-de-uso'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Termo de uso</a></Link>
+                                        <Link href={'/termos-de-uso'}><a className='nav-link text-white hover:bg-blue-900 rounded mx-2'>Termo de uso</a></Link>
                                     </li>
                                 </ul>
 

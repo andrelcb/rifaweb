@@ -1,3 +1,17 @@
+export type PedidoType = {
+    nome: string,
+    rifas_idrifas: string,
+    email: string,
+    cpf: string,
+    valor_total: string
+    txid: string
+    status: string
+    expira_em: string
+}
+
+
+
+
 export type Pedido = {
     nomeRifa: string,
     numeros: string,

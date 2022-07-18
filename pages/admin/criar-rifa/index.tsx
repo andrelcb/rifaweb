@@ -119,6 +119,10 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                 </div>
 
                 <div className="mt-10 sm:mt-0">
+                    <div className="alert alert-warning w-2/4 mx-auto shadow-md">
+                        <p className="font-serif">Atenção! Todos os sorteios são realizados baseado na Loteria Federal. Se caso for definir uma data, defina em uma data que seja realizado o sorteio
+                            da Loteria Federal (Quarta ou Sábado). Conforme dito nos <a target={'_blank'} href='/termos-de-uso'>Termos de uso</a></p>
+                    </div>
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                         <div className="mt-1 md:mt-0 md:col-span-3">
                             <form onSubmit={handleSubmit(cadastraRifa)}>
@@ -329,7 +333,7 @@ const CriarRifa = ({ categoriaRifa }: Props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <span className="px-3 text-sm mt text-slate-600">Ao criar esta rifa declaro ter lido e concordado com os <a href="">termos de uso</a> da plataforma RifaWeb.</span>
+                                    <span className="px-3 text-sm mt text-slate-600">Ao criar esta rifa declaro ter lido e concordado com os <a target={'_blank'} href="/termos-de-uso">termos de uso</a> da plataforma RifaWeb.</span>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                         <button type="submit" className='botao botao-primario inline-flex justify-center px-4'>
                                             {carregando ? <div className="px-4 animate-spin bi bi-arrow-repeat"></div> : 'Criar Rifa'}

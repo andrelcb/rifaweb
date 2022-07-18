@@ -14,7 +14,7 @@ type Props = {
 
 const Usuario = ({ usuario }: Props) => {
     const [openTab, setOpenTab] = useState(1);
-    
+
     return (
         <Layout>
             <div className="container">
@@ -98,6 +98,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     //busca usuarios
     const resposta = await api.buscaUsuarios(nomeusuario);
     const usuario: Usuario = resposta.usuario;
+    if (!usuario) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            },
+        }
+    }
 
     return {
         props: {

@@ -8,7 +8,7 @@ export const Alerta = () => {
             autoClose={3000}
             hideProgressBar={false}
             closeOnClick={true}
-            pauseOnHover={false}
+            pauseOnHover={true}
             draggable={true}
         />
     )

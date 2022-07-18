@@ -623,6 +623,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const resposta = await apiClient.get(`/rifa/${id}`);
     const rifas: Rifa[] = resposta.data.rifas;
 
+    if (rifas[0].status === "Finalizado") {
+        return {
+            redirect: {
+                destination: '/admin',
+                permanent: false
+            }
+        }
+    }
+
     //busca rifas
     const api = useApi();
     const respostaCategoria = await api.buscaCategoriaRifa();

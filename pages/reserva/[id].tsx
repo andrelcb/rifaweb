@@ -117,7 +117,7 @@ const Reserva = ({ reserva }: Props) => {
                     <div className="col-sm-12 col-md-12 col-lg-8">
                         <div className="px-2 py-6 sm:px-0">
                             <div className="card shadow-md shadow-blue-200 p-4">
-                                <h3><i className="bi bi-info-circle mr-2"></i>{reserva.status == 'Reservado' ? 'Informações da reserva.' : 'Pedido Pago.'} </h3>
+                                <h3><i className="bi bi-info-circle mr-2"></i>{reserva.status == 'Reservado' ? 'Informações da reserva.' : 'Pedido Pago!'} </h3>
                                 <div className="row mt-3">
                                     <div className="col-sm-4 col-md-4 col-lg-6">
                                         <span>Participante:</span>

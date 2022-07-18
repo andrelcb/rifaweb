@@ -44,7 +44,11 @@ export const useApi = () => ({
         const resposta = await api.get(`/rifa/${id}`);
         return resposta.data;
     },
+    buscaRifaPorUsuario: async () => {
+        const resposta = await api.get(`/rifas`);
+        return resposta.data;
 
+    },
     buscaPremioRifa: async (id: number) => {
         const resposta = await api.get(`/rifa/${id}/buscar-premios-rifa`);
         return resposta.data;
@@ -99,7 +103,7 @@ export const useApi = () => ({
         const resposta = await api.delete(`/rifa/${id}/deletar-imagem`);
         return resposta.data
     },
-    deletarPremio: async (idRifa:number, idPremio: number) => {
+    deletarPremio: async (idRifa: number, idPremio: number) => {
         const resposta = await api.delete(`/rifa/${idRifa}/deletar-premio/${idPremio}`);
         return resposta.data
     },
@@ -110,6 +114,10 @@ export const useApi = () => ({
     buscaPedidos: async (params: object) => {
         const resposta = await api.get(`/pedidos/`, { params: params });
         return resposta.data;
+    },
+    finalizarRifa: async (id: number, data: object) => {
+        const resposta = await api.post(`/rifa/${id}/finalizar-rifa`, data);
+        return resposta.data
     },
     geraCobrancaPix: async (data: object) => {
         const resposta = await api.post(`/gerar-cobranca-pix`, data);
